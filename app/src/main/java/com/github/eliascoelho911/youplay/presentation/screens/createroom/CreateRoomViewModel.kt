@@ -1,26 +1,41 @@
 package com.github.eliascoelho911.youplay.presentation.screens.createroom
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.eliascoelho911.youplay.R
+import com.github.eliascoelho911.youplay.common.collectResource
 import com.github.eliascoelho911.youplay.domain.usecases.room.CreateNewRoom
 import com.github.eliascoelho911.youplay.domain.usecases.session.PutCurrentRoomId
 import com.github.eliascoelho911.youplay.domain.usecases.user.GetLoggedUser
 import com.github.eliascoelho911.youplay.presentation.util.RoomIDGenerator
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 
 class CreateRoomViewModel(
     private val createNewRoom: CreateNewRoom,
     private val putCurrentRoomId: PutCurrentRoomId,
+    private val context: WeakReference<Context>,
     getLoggedUser: GetLoggedUser,
 //    private val createNewRoom: CreateNewRoomWithDefaultName,
 //    private val accessRoom: AccessRoom,
 ) : ViewModel() {
     val loggedUser = getLoggedUser.loggedUser
 
-    fun createNewRoom(name: String) {
+    fun createNewRoom() {
         viewModelScope.launch {
-            createNewRoom.invoke(id = RoomIDGenerator.generate(), name).let { createdRoomId ->
-                putCurrentRoomId.invoke(createdRoomId)
+            loggedUser.collectResource {
+                onSuccess { loggedUser ->
+                    val roomName = context.get()
+                        ?.getString(R.string.defaultRoomName, loggedUser.firstName)
+                        .orEmpty()
+                    createNewRoom.invoke(
+                        id = RoomIDGenerator.generate(),
+                        name = roomName
+                    ).let { createdRoomId ->
+                        putCurrentRoomId.invoke(createdRoomId)
+                    }
+                }
             }
         }
     }

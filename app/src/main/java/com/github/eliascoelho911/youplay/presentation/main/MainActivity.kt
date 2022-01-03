@@ -7,14 +7,15 @@ import androidx.activity.compose.setContent
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import com.github.eliascoelho911.youplay.R
 import com.github.eliascoelho911.youplay.common.observeResource
-import com.github.eliascoelho911.youplay.presentation.util.navigate
 import com.github.eliascoelho911.youplay.presentation.navigation.Destination
 import com.github.eliascoelho911.youplay.presentation.screens.createroom.CreateRoomScreen
 import com.github.eliascoelho911.youplay.presentation.screens.createroom.CreateRoomViewModel
 import com.github.eliascoelho911.youplay.presentation.screens.roomdetails.RoomDetailsScreen
 import com.github.eliascoelho911.youplay.presentation.screens.roomdetails.RoomDetailsViewModel
 import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
+import com.github.eliascoelho911.youplay.presentation.util.navigate
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -61,7 +62,7 @@ class MainActivity : ComponentActivity() {
 
             CreateRoomScreen(viewModel = viewModel,
                 onClickToCreateRoom = {
-                    viewModel.createNewRoom("teste Festa do elias")
+                    viewModel.createNewRoom()
                     navController.navigate(Destination.RoomDetails)
                 },
                 onClickToEnterRoom = { /*TODO*/ })
