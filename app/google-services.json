@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1070812574177",
+    "project_id": "youplay-fd9e8",
+    "storage_bucket": "youplay-fd9e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070812574177:android:d0f5bb9a79286816eb62a0",
+        "android_client_info": {
+          "package_name": "com.github.eliascoelho911.youplay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070812574177-dpfn4ktr6c8uuh309tef2ro5uoksijhv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.eliascoelho911.youplay",
+            "certificate_hash": "2a6757065c50874c9e0ef083c9a80e0a073e8a1e"
+          }
+        },
+        {
+          "client_id": "1070812574177-r4pncle8hoaa2c0hp6qj6ses1ocg042u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2y0f4nbaxPF-5jVIR_IBWHEifPiWQ4YQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070812574177-r4pncle8hoaa2c0hp6qj6ses1ocg042u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
