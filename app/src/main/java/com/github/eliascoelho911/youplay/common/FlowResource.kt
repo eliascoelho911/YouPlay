@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 
-//todo criar testes
 fun <T> flowResource(block: suspend FlowCollector<Resource<T>>.() -> Unit): Flow<Resource<T>> =
     flow {
         emit(Resource.loading())
@@ -18,7 +17,7 @@ fun <T> flowResource(block: suspend FlowCollector<Resource<T>>.() -> Unit): Flow
 
 fun <T> callbackFlowResource(block: suspend ProducerScope<Resource<T>>.() -> Unit): Flow<Resource<T>> =
     callbackFlow {
-        trySend(Resource.loading())
+        send(Resource.loading())
         block()
     }.distinctUntilChanged()
 
