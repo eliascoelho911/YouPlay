@@ -25,7 +25,7 @@ class GetAuthSessionIdTest {
     @Test
     fun getSessionId() {
         val id = "id"
-        coEvery { applicationSession.getId() } returns id
+        coEvery { applicationSession.getAuthId() } returns id
 
         runBlocking {
             assertEquals(id, getAuthSessionId.get())

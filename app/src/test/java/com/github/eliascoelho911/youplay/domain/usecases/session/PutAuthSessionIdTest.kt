@@ -29,6 +29,6 @@ class PutAuthSessionIdTest {
             putAuthSessionId.invoke(id)
         }
 
-        coVerify { applicationSession.putId(id) }
+        coVerify { applicationSession.putAuthId(id) }
     }
 }
