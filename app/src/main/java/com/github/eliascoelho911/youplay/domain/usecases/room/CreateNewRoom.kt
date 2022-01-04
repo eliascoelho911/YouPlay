@@ -10,7 +10,8 @@ class CreateNewRoom(
     private val roomRepository: RoomRepository,
     private val getLoggedUser: GetLoggedUser,
 ) {
-    suspend fun invoke(id: String, name: String): String {
+    @Throws(NoSuchElementException::class)
+    suspend fun invoke(id: String, name: String) {
         getLoggedUser.loggedUser.lastResult().onSuccess { user ->
             roomRepository.add(Room(
                 id = id,
@@ -18,7 +19,8 @@ class CreateNewRoom(
                 ownerId = user.id,
                 currentMusicId = null,
                 player = PlayerData()))
+        }.onFailure {
+            throw NoSuchElementException(it.message)
         }
-        return id
     }
 }

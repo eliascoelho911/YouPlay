@@ -22,19 +22,19 @@ class CreateRoomViewModel(
 ) : ViewModel() {
     val loggedUser = getLoggedUser.loggedUser
 
+    @Throws(NoSuchElementException::class)
     fun createNewRoom() {
         viewModelScope.launch {
             loggedUser.collectResource {
                 onSuccess { loggedUser ->
                     val roomName = context.get()
-                        ?.getString(R.string.defaultRoomName, loggedUser.firstName)
-                        .orEmpty()
-                    createNewRoom.invoke(
-                        id = RoomIDGenerator.generate(),
-                        name = roomName
-                    ).let { createdRoomId ->
-                        putCurrentRoomId.invoke(createdRoomId)
-                    }
+                        ?.getString(R.string.defaultRoomName, loggedUser.firstName).orEmpty()
+                    val roomId = RoomIDGenerator.generate()
+                    createNewRoom.invoke(roomId, roomName)
+                    putCurrentRoomId.invoke(roomId)
+                }
+                onFailure {
+                    throw it
                 }
             }
         }

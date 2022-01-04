@@ -2,6 +2,7 @@ package com.github.eliascoelho911.youplay.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.graphics.Color
@@ -62,11 +63,21 @@ class MainActivity : ComponentActivity() {
 
             CreateRoomScreen(viewModel = viewModel,
                 onClickToCreateRoom = {
-                    viewModel.createNewRoom()
-                    navController.navigate(Destination.RoomDetails)
+                    runCatching {
+                        viewModel.createNewRoom()
+                    }.onSuccess {
+                        navController.navigate(Destination.RoomDetails)
+                    }.onFailure {
+                        showError(getString(R.string.error_create_new_room))
+                    }
                 },
                 onClickToEnterRoom = { /*TODO*/ })
         }
+    }
+
+    private fun showError(message: String) {
+        //TODO Mostrar o erro de uma forma mais bonita
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun NavGraphBuilder.roomDetailsScreen(navController: NavHostController) {
