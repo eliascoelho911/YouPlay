@@ -1,13 +1,13 @@
 package com.github.eliascoelho911.youplay.presentation.main
 
 import android.app.Application
+import com.github.eliascoelho911.youplay.domain.di.useCasesModule
 import com.github.eliascoelho911.youplay.infrastructure.di.cachesModule
+import com.github.eliascoelho911.youplay.infrastructure.di.firebaseModule
 import com.github.eliascoelho911.youplay.infrastructure.di.interceptorsModule
 import com.github.eliascoelho911.youplay.infrastructure.di.repositoriesModule
 import com.github.eliascoelho911.youplay.infrastructure.di.retrofitModule
 import com.github.eliascoelho911.youplay.infrastructure.di.servicesModule
-import com.github.eliascoelho911.youplay.domain.di.useCasesModule
-import com.github.eliascoelho911.youplay.infrastructure.di.firebaseModule
 import com.github.eliascoelho911.youplay.infrastructure.di.sessionModule
 import com.github.eliascoelho911.youplay.presentation.di.viewModelModule
 import org.koin.android.ext.koin.androidContext

@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.map
 
 class GetCurrentMusic(private val getCurrentRoom: GetCurrentRoom) {
-    fun get() = flowResource<Music> {
-        emitAll(getCurrentRoom.get().map {
+    val currentMusic = flowResource<Music> {
+        emitAll(getCurrentRoom.currentRoom(true).map {
             when (it) {
                 is Resource.Success -> {
                     val room = it.data

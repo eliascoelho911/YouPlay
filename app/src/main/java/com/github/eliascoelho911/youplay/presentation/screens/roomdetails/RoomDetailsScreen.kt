@@ -54,22 +54,18 @@ import com.github.eliascoelho911.youplay.domain.entities.Artist
 import com.github.eliascoelho911.youplay.domain.entities.Music
 import com.github.eliascoelho911.youplay.domain.entities.PlayerData
 import com.github.eliascoelho911.youplay.domain.entities.Room
+import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
 import com.github.eliascoelho911.youplay.presentation.util.AnimationDurations.medium
 import com.github.eliascoelho911.youplay.presentation.util.AppTopBarWithCentralizedTitle
 import com.github.eliascoelho911.youplay.presentation.util.screenPadding
-import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
 @Composable
 fun RoomDetailsScreen(
     viewModel: RoomDetailsViewModel,
-    //todo: isso aqui pode ser administrado apenas dentro do roomDetails
-    showExitRoomDialog: Boolean = false,
     backgroundColor: Color,
-    onBackPressed: () -> Unit,
-    onConfirmExitRoom: () -> Unit,
-    onDismissExitRoom: () -> Unit,
+    onConfirmExitFromRoom: () -> Unit,
     onClickOptions: () -> Unit,
     onUpdateRoomName: (String) -> Unit,
     onClickSkipToPreviousMusicButton: () -> Unit,
@@ -81,6 +77,7 @@ fun RoomDetailsScreen(
 ) {
     val roomResource by viewModel.currentRoom.collectAsState(initial = Resource.loading())
     val currentMusicResource by viewModel.currentMusic.collectAsState(initial = Resource.loading())
+    var showExitFromRoomDialog by remember { mutableStateOf(false) }
 
     Box(Modifier.fillMaxSize()) {
         Background(color = backgroundColor)
@@ -89,7 +86,9 @@ fun RoomDetailsScreen(
                 RoomDetailsTopBar(
                     roomName = room.name,
                     onUpdateTitle = onUpdateRoomName,
-                    onBackPressed = onBackPressed,
+                    onClickExitFromRoom = {
+                        showExitFromRoomDialog = true
+                    },
                     onClickOptions = onClickOptions)
             }) {
                 RoomDetailsContent(
@@ -104,8 +103,14 @@ fun RoomDetailsScreen(
                 )
             }
         }
-        if (showExitRoomDialog)
-            ExitRoomDialog(onConfirmExitRoom, onDismissExitRoom)
+
+        if (showExitFromRoomDialog)
+            ExitFromRoomDialog(onConfirmExitFromRoom = {
+                showExitFromRoomDialog = false
+                onConfirmExitFromRoom()
+            }, onDismissExitRoom = {
+                showExitFromRoomDialog = false
+            })
     }
 }
 
@@ -161,7 +166,7 @@ private fun RoomDetailsContent(
 private fun RoomDetailsTopBar(
     roomName: String,
     onUpdateTitle: (String) -> Unit,
-    onBackPressed: () -> Unit,
+    onClickExitFromRoom: () -> Unit,
     onClickOptions: () -> Unit,
 ) {
     var title by remember { mutableStateOf(roomName) }
@@ -172,7 +177,7 @@ private fun RoomDetailsTopBar(
                 title = newTitle
             }, onUpdateTitle = onUpdateTitle)
         },
-        onBackPressed = onBackPressed,
+        onBackPressed = onClickExitFromRoom,
         actions = {
             OptionsButton(onClickOptions)
         })
@@ -231,7 +236,7 @@ private fun ColumnScope.AlbumImage(modifier: Modifier = Modifier, imageUrl: Stri
 }
 
 @Composable
-private fun ExitRoomDialog(onConfirmExitRoom: () -> Unit, onDismissExitRoom: () -> Unit) {
+private fun ExitFromRoomDialog(onConfirmExitFromRoom: () -> Unit, onDismissExitRoom: () -> Unit) {
     AlertDialog(onDismissRequest = {
         onDismissExitRoom()
     }, dismissButton = {
@@ -239,7 +244,7 @@ private fun ExitRoomDialog(onConfirmExitRoom: () -> Unit, onDismissExitRoom: () 
             onDismissExitRoom()
         }, text = stringResource(id = R.string.roomDetails_notExitRoom))
     }, confirmButton = {
-        DialogButton(onClick = onConfirmExitRoom,
+        DialogButton(onClick = onConfirmExitFromRoom,
             text = stringResource(id = R.string.roomDetails_confirmExitRoom))
     }, title = {
         Text(stringResource(id = R.string.roomDetails_exitRoomDialogTitle),
@@ -275,13 +280,13 @@ private fun RoomDetailsContentPreview() {
                 artists = listOf(Artist("WS", "Wesley Safadão")),
                 album = Album(name = "Album", imageUrl = "", id = ""),
                 durationInSeconds = 300)),
-                onClickSkipToPreviousMusicButton = {},
-                onClickSkipToNextMusicButton = {},
-                onClickPlayOrPauseButton = {},
-                onTimeChange = {},
-                onClickShuffleButton = {},
-                onClickRepeatButton = {}
-            )
+            onClickSkipToPreviousMusicButton = {},
+            onClickSkipToNextMusicButton = {},
+            onClickPlayOrPauseButton = {},
+            onTimeChange = {},
+            onClickShuffleButton = {},
+            onClickRepeatButton = {}
+        )
     }
 }
 

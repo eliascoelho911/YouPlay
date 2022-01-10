@@ -202,6 +202,7 @@ private fun CreateRoomCardContent(onClickCreateRoomButton: () -> Unit) {
 
         Spacer(Modifier.height(CreateRoomCardButtonMargin))
 
+        //todo Colocar um loading progress
         Button(onClick = onClickCreateRoomButton) {
             Text(text = stringResource(id = R.string.createRoom_cardButton).uppercase(),
                 style = typography.button, color = colors.background)

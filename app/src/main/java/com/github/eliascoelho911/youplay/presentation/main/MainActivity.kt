@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.github.eliascoelho911.youplay.R
@@ -20,6 +21,7 @@ import com.github.eliascoelho911.youplay.presentation.util.navigate
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -63,12 +65,14 @@ class MainActivity : ComponentActivity() {
 
             CreateRoomScreen(viewModel = viewModel,
                 onClickToCreateRoom = {
-                    runCatching {
-                        viewModel.createNewRoom()
-                    }.onSuccess {
-                        navController.navigate(Destination.RoomDetails)
-                    }.onFailure {
-                        showError(getString(R.string.error_create_new_room))
+                    lifecycleScope.launch {
+                        runCatching {
+                            viewModel.createNewRoom()
+                        }.onSuccess {
+                            navController.navigate(Destination.RoomDetails)
+                        }.onFailure {
+                            showError(getString(R.string.error_create_new_room))
+                        }
                     }
                 },
                 onClickToEnterRoom = { /*TODO*/ })
@@ -86,9 +90,10 @@ class MainActivity : ComponentActivity() {
 
             RoomDetailsScreen(viewModel = viewModel,
                 backgroundColor = Color.Blue,
-                onBackPressed = { navController.popBackStack() },
-                onConfirmExitRoom = {},
-                onDismissExitRoom = {},
+                onConfirmExitFromRoom = {
+                    viewModel.userExitFromRoom()
+                    navController.popBackStack()
+                },
                 onClickOptions = {},
                 onUpdateRoomName = {},
                 onClickSkipToNextMusicButton = {},

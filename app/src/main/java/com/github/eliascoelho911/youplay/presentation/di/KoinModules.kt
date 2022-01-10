@@ -18,7 +18,8 @@ val viewModelModule = module {
     viewModel {
         RoomDetailsViewModel(
             getCurrentMusic = get(),
-            getCurrentRoom = get()
+            getCurrentRoom = get(),
+            userExitFromRoom = get()
         )
     }
     viewModel {

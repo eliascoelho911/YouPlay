@@ -7,14 +7,14 @@ import com.github.eliascoelho911.youplay.domain.session.ApplicationSession
 import com.github.eliascoelho911.youplay.infrastructure.data.caches.SpotifyAccessTokenCache
 import com.github.eliascoelho911.youplay.infrastructure.data.caches.UserLoggedInSpotifyCache
 import com.github.eliascoelho911.youplay.infrastructure.data.repositories.RoomRepositoryImpl
-import com.github.eliascoelho911.youplay.infrastructure.interceptors.SpotifyAuthorizationInterceptor
 import com.github.eliascoelho911.youplay.infrastructure.data.repositories.SpotifyAuthorizationRepositoryImpl
 import com.github.eliascoelho911.youplay.infrastructure.data.repositories.UserRepositoryImpl
-import com.github.eliascoelho911.youplay.infrastructure.retrofit.FunctionsRetrofit
-import com.github.eliascoelho911.youplay.infrastructure.retrofit.SpotifyRetrofit
 import com.github.eliascoelho911.youplay.infrastructure.data.services.FunctionsService
 import com.github.eliascoelho911.youplay.infrastructure.data.services.SpotifyService
 import com.github.eliascoelho911.youplay.infrastructure.data.session.ApplicationSessionImpl
+import com.github.eliascoelho911.youplay.infrastructure.interceptors.SpotifyAuthorizationInterceptor
+import com.github.eliascoelho911.youplay.infrastructure.retrofit.FunctionsRetrofit
+import com.github.eliascoelho911.youplay.infrastructure.retrofit.SpotifyRetrofit
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient

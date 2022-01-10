@@ -3,6 +3,8 @@ package com.github.eliascoelho911.youplay.infrastructure.data.repositories
 import com.github.eliascoelho911.youplay.common.Resource
 import com.github.eliascoelho911.youplay.common.callbackFlowResource
 import com.github.eliascoelho911.youplay.common.emitErrors
+import com.github.eliascoelho911.youplay.common.flowResource
+import com.github.eliascoelho911.youplay.common.serializeToMap
 import com.github.eliascoelho911.youplay.domain.entities.ID
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.repositories.RoomRepository
@@ -21,20 +23,37 @@ class RoomRepositoryImpl(
 ) : RoomRepository {
     private val collection = db.collection(CollectionName)
 
-    override fun fetchRoomById(id: ID) = callbackFlowResource<Room> {
-        collection.document(id).addSnapshotListener { snapshot, error ->
-            if (error != null)
-                cancel(message = error.message.toString(), cause = error)
-            else if (snapshot != null && snapshot.exists()) {
-                val roomDocument = snapshot.toObject(RoomDocument::class.java)!!
-                trySend(Resource.success(roomDocument.toEntity(id)))
-            }
-        }.let { subscription ->
-            awaitClose { subscription.remove() }
+    override fun fetchRoomById(id: ID, observe: Boolean) =
+        if (observe) {
+            callbackFlowResource<Room> {
+                collection.document(id).addSnapshotListener { snapshot, error ->
+                    if (error != null)
+                        cancel(message = error.message.toString(), cause = error)
+                    else if (snapshot != null && snapshot.exists()) {
+                        val roomDocument = snapshot.toObject(RoomDocument::class.java)!!
+                        trySend(Resource.success(roomDocument.toEntity(id)))
+                    }
+                }.let { subscription ->
+                    awaitClose { subscription.remove() }
+                }
+            }.emitErrors()
+        } else {
+            flowResource<Room> {
+                val room = collection.document(id).get().await()
+                val roomDocument = room.toObject(RoomDocument::class.java)!!
+                emit(Resource.success(roomDocument.toEntity(id)))
+            }.emitErrors()
         }
-    }.emitErrors()
 
     override suspend fun add(room: Room) {
         collection.document(room.id).set(room.toDocument()).await()
+    }
+
+    override suspend fun deleteRoomById(id: ID) {
+        collection.document(id).delete().await()
+    }
+
+    override suspend fun updateRoom(room: Room) {
+        collection.document(room.id).update(room.toDocument().serializeToMap())
     }
 }

@@ -37,8 +37,8 @@ import com.github.eliascoelho911.youplay.domain.entities.Artist
 import com.github.eliascoelho911.youplay.domain.entities.Music
 import com.github.eliascoelho911.youplay.domain.entities.PlayerData
 import com.github.eliascoelho911.youplay.domain.entities.RepeatMode
-import com.github.eliascoelho911.youplay.presentation.util.screenPadding
 import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
+import com.github.eliascoelho911.youplay.presentation.util.screenPadding
 import kotlin.math.roundToInt
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration

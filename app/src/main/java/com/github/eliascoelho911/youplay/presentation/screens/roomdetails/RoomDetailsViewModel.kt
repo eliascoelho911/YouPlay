@@ -1,8 +1,11 @@
 package com.github.eliascoelho911.youplay.presentation.screens.roomdetails
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentMusic
 import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
+import com.github.eliascoelho911.youplay.domain.usecases.user.UserExitFromRoom
+import kotlinx.coroutines.launch
 
 class RoomDetailsViewModel(
 //    private val updateRoomName: UpdateRoomName,
@@ -16,7 +19,8 @@ class RoomDetailsViewModel(
 //    findDominantColorInCurrentMusic: FindDominantColorInCurrentMusic,
 //    userIsInSomeRoom: UserIsInSomeRoom,
     getCurrentRoom: GetCurrentRoom,
-    getCurrentMusic: GetCurrentMusic
+    getCurrentMusic: GetCurrentMusic,
+    private val userExitFromRoom: UserExitFromRoom,
 //    fetchCurrentMusic: FetchCurrentMusic,
 ) : ViewModel() {
 //    var userIsInSomeRoom: Boolean = false
@@ -27,8 +31,14 @@ class RoomDetailsViewModel(
 //        }
 //    }
 
-    val currentRoom = getCurrentRoom.get()
-    val currentMusic = getCurrentMusic.get()
+    val currentRoom = getCurrentRoom.currentRoom(true)
+    val currentMusic = getCurrentMusic.currentMusic
+
+    fun userExitFromRoom() {
+        viewModelScope.launch {
+            userExitFromRoom.invoke()
+        }
+    }
 //    val dominantColorInCurrentMusic = findDominantColorInCurrentMusic.invoke()
 //
 //    fun updateRoomName(newName: String) =
