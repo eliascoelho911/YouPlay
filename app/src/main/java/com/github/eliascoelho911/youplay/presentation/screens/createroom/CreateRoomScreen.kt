@@ -1,12 +1,17 @@
 package com.github.eliascoelho911.youplay.presentation.screens.createroom
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +19,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.MaterialTheme.shapes
@@ -40,18 +47,19 @@ import coil.compose.rememberImagePainter
 import com.github.eliascoelho911.youplay.R
 import com.github.eliascoelho911.youplay.common.Resource
 import com.github.eliascoelho911.youplay.domain.entities.User
-import com.github.eliascoelho911.youplay.presentation.util.AppTopBar
-import com.github.eliascoelho911.youplay.presentation.util.ShapeProgressIndicator
-import com.github.eliascoelho911.youplay.presentation.util.screenPadding
 import com.github.eliascoelho911.youplay.presentation.theme.Purple2C3863
 import com.github.eliascoelho911.youplay.presentation.theme.RedEC5462
 import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
+import com.github.eliascoelho911.youplay.presentation.util.AppTopBar
+import com.github.eliascoelho911.youplay.presentation.util.ShapeProgressIndicator
+import com.github.eliascoelho911.youplay.presentation.util.screenPadding
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
 @Composable
 fun CreateRoomScreen(
     viewModel: CreateRoomViewModel,
+    createRoomButtonIsLoading: Boolean,
     onClickToCreateRoom: () -> Unit,
     onClickToEnterRoom: () -> Unit,
 ) {
@@ -61,7 +69,7 @@ fun CreateRoomScreen(
             .background(colors.background)
             .fillMaxSize()
     ) {
-        CreateRoomContent(user, onClickToCreateRoom, onClickToEnterRoom)
+        CreateRoomContent(user, createRoomButtonIsLoading, onClickToCreateRoom, onClickToEnterRoom)
     }
 }
 
@@ -77,14 +85,15 @@ private fun CreateRoomTopBar(user: Resource<User>) {
 @Composable
 private fun CreateRoomContent(
     user: Resource<User>,
+    createRoomButtonIsLoading: Boolean,
     onClickCreateRoomButton: () -> Unit,
-    onClickEnterTheRoom: () -> Unit
+    onClickEnterTheRoom: () -> Unit,
 ) {
     Column(Modifier
         .screenPadding(vertical = false)
         .fillMaxSize()
         .navigationBarsPadding()) {
-        CreateRoomCard(user, onClickCreateRoomButton)
+        CreateRoomCard(user, createRoomButtonIsLoading, onClickCreateRoomButton)
         EnterRoomClickableMessage(onClickEnterTheRoom, user)
     }
 }
@@ -167,6 +176,7 @@ private fun ProfileImageProgressIndicator() {
 @Composable
 private fun CreateRoomCard(
     user: Resource<User>,
+    createRoomButtonIsLoading: Boolean,
     onClickCreateRoomButton: () -> Unit,
 ) {
     user.onSuccess {
@@ -176,7 +186,7 @@ private fun CreateRoomCard(
                 0.17f to RedEC5462,
                 1f to Purple2C3863,
             ), shapes.medium)) {
-            CreateRoomCardContent(onClickCreateRoomButton)
+            CreateRoomCardContent(createRoomButtonIsLoading, onClickCreateRoomButton)
         }
     }.onLoading {
         CreateRoomProgressIndicator()
@@ -186,7 +196,7 @@ private fun CreateRoomCard(
 }
 
 @Composable
-private fun CreateRoomCardContent(onClickCreateRoomButton: () -> Unit) {
+private fun CreateRoomCardContent(buttonIsLoading: Boolean, onClickCreateRoomButton: () -> Unit) {
     Column(Modifier
         .padding(CreateRoomCardInternalMargin)
         .fillMaxWidth(),
@@ -202,10 +212,32 @@ private fun CreateRoomCardContent(onClickCreateRoomButton: () -> Unit) {
 
         Spacer(Modifier.height(CreateRoomCardButtonMargin))
 
-        //todo Colocar um loading progress
-        Button(onClick = onClickCreateRoomButton) {
-            Text(text = stringResource(id = R.string.createRoom_cardButton).uppercase(),
-                style = typography.button, color = colors.background)
+        Box {
+            Row(modifier = Modifier.align(Alignment.Center),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center) {
+                AnimatedVisibility(visible = buttonIsLoading,
+                    enter = fadeIn(),
+                    exit = fadeOut()) {
+                    CircularProgressIndicator(modifier = Modifier
+                        .size(
+                            width = ButtonDefaults.MinHeight,
+                            height = ButtonDefaults.MinHeight
+                        ))
+                }
+            }
+            Row(modifier = Modifier.align(Alignment.Center),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center) {
+                AnimatedVisibility(visible = !buttonIsLoading,
+                    enter = fadeIn(),
+                    exit = fadeOut()) {
+                    Button(onClick = onClickCreateRoomButton) {
+                        Text(text = stringResource(id = R.string.createRoom_cardButton).uppercase(),
+                            style = typography.button, color = colors.background)
+                    }
+                }
+            }
         }
     }
 }
@@ -250,12 +282,26 @@ private fun BoxScope.EnterRoomClickableMessageProgressIndicator() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ContentWithUserSuccessPreview() {
+private fun ContentWithCreateRoomButtonIsLoading() {
     YouPlayTheme {
         CreateRoomContent(
             user = Resource.Success(User("Elias Costa")),
             onClickCreateRoomButton = {},
-            onClickEnterTheRoom = { },
+            onClickEnterTheRoom = {},
+            createRoomButtonIsLoading = true
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ContentWithNotCreateRoomButtonIsLoading() {
+    YouPlayTheme {
+        CreateRoomContent(
+            user = Resource.Success(User("Elias Costa")),
+            onClickCreateRoomButton = {},
+            onClickEnterTheRoom = {},
+            createRoomButtonIsLoading = false
         )
     }
 }
@@ -268,6 +314,7 @@ private fun ContentWithUserLoadingPreview() {
             user = Resource.Loading(),
             onClickCreateRoomButton = {},
             onClickEnterTheRoom = {},
+            createRoomButtonIsLoading = true
         )
     }
 }

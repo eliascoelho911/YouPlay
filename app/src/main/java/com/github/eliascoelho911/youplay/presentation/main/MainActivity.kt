@@ -5,6 +5,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavGraphBuilder
@@ -62,9 +66,11 @@ class MainActivity : ComponentActivity() {
     private fun NavGraphBuilder.createRoomScreen(navController: NavHostController) {
         composable(Destination.CreateRoom.baseRoute) {
             val viewModel: CreateRoomViewModel by viewModel()
+            var createRoomButtonIsLoading by remember { mutableStateOf(false) }
 
             CreateRoomScreen(viewModel = viewModel,
                 onClickToCreateRoom = {
+                    createRoomButtonIsLoading = true
                     lifecycleScope.launch {
                         runCatching {
                             viewModel.createNewRoom()
@@ -72,10 +78,12 @@ class MainActivity : ComponentActivity() {
                             navController.navigate(Destination.RoomDetails)
                         }.onFailure {
                             showError(getString(R.string.error_create_new_room))
+                            createRoomButtonIsLoading = false
                         }
                     }
                 },
-                onClickToEnterRoom = { /*TODO*/ })
+                onClickToEnterRoom = { /*TODO*/ },
+                createRoomButtonIsLoading = createRoomButtonIsLoading)
         }
     }
 
