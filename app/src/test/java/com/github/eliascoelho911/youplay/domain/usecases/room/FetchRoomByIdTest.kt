@@ -29,15 +29,16 @@ class FetchRoomByIdTest {
         MockKAnnotations.init(this)
     }
 
+    //todo testar lembrando dos diferentes casos
     @Test
     fun fetchRoomById() {
         val id = "id"
         val room: Room = mockk()
 
-        every { roomRepository.fetchRoomById(id) } returns flowOf(Resource.success(room))
+        every { roomRepository.fetchRoomById(id, observe = false) } returns flowOf(Resource.success(room))
 
         runBlocking {
-            fetchRoomById.fetch(id).collect {
+            fetchRoomById.invoke(id).collect {
                 assertThat(it, instanceOf(Resource.Success::class.java))
 
                 it.onSuccess { result ->
