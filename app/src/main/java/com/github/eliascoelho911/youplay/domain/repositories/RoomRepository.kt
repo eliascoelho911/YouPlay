@@ -6,7 +6,9 @@ import com.github.eliascoelho911.youplay.domain.entities.Room
 import kotlinx.coroutines.flow.Flow
 
 interface RoomRepository {
-    fun fetchRoomById(id: ID, observe: Boolean): Flow<Resource<Room>>
+    fun observeRoomById(id: ID): Flow<Resource<Room>>
+
+    fun getRoomById(id: ID): Flow<Resource<Room>>
 
     suspend fun add(room: Room)
 

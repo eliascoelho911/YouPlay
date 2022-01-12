@@ -16,7 +16,7 @@ class CreateRoomViewModel(
     private val context: WeakReference<Context>,
     getLoggedUser: GetLoggedUser,
 ) : ViewModel() {
-    val loggedUser = getLoggedUser.loggedUser
+    val loggedUser = getLoggedUser.get()
 
     @Throws(NoSuchElementException::class)
     suspend fun createNewRoom() {
@@ -24,8 +24,8 @@ class CreateRoomViewModel(
             val roomName = context.get()
                 ?.getString(R.string.defaultRoomName, loggedUser.firstName).orEmpty()
             val roomId = RoomIDGenerator.generate()
-            createNewRoom.invoke(roomId, roomName)
-            putCurrentRoomId.invoke(roomId)
+            createNewRoom.create(roomId, roomName)
+            putCurrentRoomId.put(roomId)
         }.onFailure {
             throw it
         }

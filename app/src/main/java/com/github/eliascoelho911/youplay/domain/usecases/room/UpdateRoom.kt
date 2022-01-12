@@ -6,7 +6,7 @@ import com.github.eliascoelho911.youplay.domain.repositories.RoomRepository
 class UpdateRoom(
     private val roomRepository: RoomRepository
 ) {
-    suspend fun invoke(room: Room) {
+    suspend fun update(room: Room) {
         roomRepository.updateRoom(room)
     }
 }

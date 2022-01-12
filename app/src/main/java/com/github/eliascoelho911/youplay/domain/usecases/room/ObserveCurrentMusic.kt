@@ -7,9 +7,9 @@ import com.github.eliascoelho911.youplay.domain.entities.Music
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.map
 
-class GetCurrentMusic(private val getCurrentRoom: GetCurrentRoom) {
-    val currentMusic = flowResource<Music> {
-        emitAll(getCurrentRoom.currentRoom(true).map {
+class ObserveCurrentMusic(private val observeCurrentRoom: ObserveCurrentRoom) {
+    fun observe() = flowResource<Music> {
+        emitAll(observeCurrentRoom.observe().map {
             when (it) {
                 is Resource.Success -> {
                     val room = it.data

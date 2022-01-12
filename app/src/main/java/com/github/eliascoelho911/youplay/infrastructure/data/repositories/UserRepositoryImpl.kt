@@ -15,7 +15,7 @@ class UserRepositoryImpl(
     private val userLoggedInSpotifyCache: UserLoggedInSpotifyCache,
     private val spotifyService: SpotifyService,
 ) : UserRepository {
-    override val loggedUser = flowResource<User> {
+    override fun getLoggedUser() = flowResource<User> {
         userLoggedInSpotifyCache.get()?.let { emitSuccess(it.toDomainUser()) }
 
         spotifyService.loggedUser().let { response ->

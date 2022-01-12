@@ -5,5 +5,5 @@ import com.github.eliascoelho911.youplay.domain.entities.User
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-    val loggedUser: Flow<Resource<User>>
+    fun getLoggedUser(): Flow<Resource<User>>
 }

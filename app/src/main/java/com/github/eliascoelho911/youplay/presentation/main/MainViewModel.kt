@@ -13,13 +13,13 @@ class MainViewModel(
     userIsAuthenticatedOnSpotify: UserIsAuthenticatedOnSpotify,
     private val authenticateUserOnSpotify: AuthenticateUserOnSpotify,
 ) : ViewModel() {
-    val userIsAuthenticatedOnSpotify = userIsAuthenticatedOnSpotify.isAuthenticated.asLiveData(
+    val userIsAuthenticatedOnSpotify = userIsAuthenticatedOnSpotify.get().asLiveData(
         context = coroutineContext
     )
 
     fun authenticateUserOnSpotify(code: String) {
         viewModelScope.launch {
-            authenticateUserOnSpotify.invoke(code)
+            authenticateUserOnSpotify.authenticate(code)
         }
     }
 }

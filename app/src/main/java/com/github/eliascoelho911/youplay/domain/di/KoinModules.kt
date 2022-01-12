@@ -2,9 +2,11 @@ package com.github.eliascoelho911.youplay.domain.di
 
 import com.github.eliascoelho911.youplay.domain.usecases.room.CreateNewRoom
 import com.github.eliascoelho911.youplay.domain.usecases.room.DeleteRoomById
-import com.github.eliascoelho911.youplay.domain.usecases.room.FetchRoomById
-import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentMusic
+import com.github.eliascoelho911.youplay.domain.usecases.room.GetRoomById
+import com.github.eliascoelho911.youplay.domain.usecases.room.ObserveCurrentMusic
 import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
+import com.github.eliascoelho911.youplay.domain.usecases.room.ObserveCurrentRoom
+import com.github.eliascoelho911.youplay.domain.usecases.room.ObserveRoomById
 import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateRoom
 import com.github.eliascoelho911.youplay.domain.usecases.session.GetAuthSessionId
 import com.github.eliascoelho911.youplay.domain.usecases.session.GetCurrentRoomId
@@ -21,9 +23,11 @@ val useCasesModule = module {
     single { GetLoggedUser(get()) }
     single { GetAuthSessionId(get()) }
     single { GetCurrentRoomId(get()) }
-    single { FetchRoomById(get()) }
+    single { GetRoomById(get()) }
     single { GetCurrentRoom(get(), get()) }
-    single { GetCurrentMusic(get()) }
+    single { ObserveCurrentRoom(get(), get()) }
+    single { ObserveCurrentMusic(get()) }
+    single { ObserveRoomById(get()) }
     single { PutCurrentRoomId(get()) }
     single { CreateNewRoom(get(), get()) }
     single { DeleteRoomById(get()) }

@@ -3,6 +3,7 @@ package com.github.eliascoelho911.youplay.domain.usecases.user
 import com.github.eliascoelho911.youplay.common.lastResult
 import com.github.eliascoelho911.youplay.domain.usecases.room.DeleteRoomById
 import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
+import com.github.eliascoelho911.youplay.domain.usecases.room.ObserveCurrentRoom
 import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateRoom
 
 class UserExitFromRoom(
@@ -12,11 +13,11 @@ class UserExitFromRoom(
     private val updateRoom: UpdateRoom,
 ) {
     @Throws(NoSuchElementException::class)
-    suspend fun invoke() {
-        getCurrentRoom.currentRoom(false).lastResult().onSuccess { currentRoom ->
-            getLoggedUser.loggedUser.lastResult().onSuccess { loggedUser ->
-                if (currentRoom.ownerId == loggedUser.id) deleteRoomById.invoke(currentRoom.id)
-                updateRoom.invoke(room = currentRoom.copy(
+    suspend fun exit() {
+        getCurrentRoom.get().lastResult().onSuccess { currentRoom ->
+            getLoggedUser.get().lastResult().onSuccess { loggedUser ->
+                if (currentRoom.ownerId == loggedUser.id) deleteRoomById.delete(currentRoom.id)
+                updateRoom.update(room = currentRoom.copy(
                     users = currentRoom.users.toMutableList().apply { remove(loggedUser.id) }
                 ))
             }.onFailure {

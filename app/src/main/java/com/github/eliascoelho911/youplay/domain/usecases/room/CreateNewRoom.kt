@@ -11,8 +11,8 @@ class CreateNewRoom(
     private val getLoggedUser: GetLoggedUser,
 ) {
     @Throws(NoSuchElementException::class)
-    suspend fun invoke(id: String, name: String) {
-        getLoggedUser.loggedUser.lastResult().onSuccess { user ->
+    suspend fun create(id: String, name: String) {
+        getLoggedUser.get().lastResult().onSuccess { user ->
             roomRepository.add(Room(
                 id = id,
                 name = name,

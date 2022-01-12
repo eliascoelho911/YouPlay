@@ -5,13 +5,13 @@ import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.usecases.session.GetCurrentRoomId
 import kotlinx.coroutines.flow.emitAll
 
-class GetCurrentRoom(
-    private val getRoomById: GetRoomById,
+class ObserveCurrentRoom(
+    private val observeRoomById: ObserveRoomById,
     private val getCurrentRoomId: GetCurrentRoomId,
 ) {
-    fun get() = flowResource<Room> {
+    fun observe() = flowResource<Room> {
         getCurrentRoomId.get()?.let { id ->
-            emitAll(getRoomById.get(id))
+            emitAll(observeRoomById.observe(id))
         }
     }
 }

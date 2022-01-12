@@ -6,9 +6,9 @@ class AuthenticateUserOnSpotify(
     private val addSpotifyRefreshToken: AddSpotifyRefreshToken,
     private val putAuthSessionId: PutAuthSessionId,
 ) {
-    suspend fun invoke(code: String) {
-        addSpotifyRefreshToken.invoke(code).let { id ->
-            putAuthSessionId.invoke(id)
+    suspend fun authenticate(code: String) {
+        addSpotifyRefreshToken.add(code).let { id ->
+            putAuthSessionId.put(id)
         }
     }
 }

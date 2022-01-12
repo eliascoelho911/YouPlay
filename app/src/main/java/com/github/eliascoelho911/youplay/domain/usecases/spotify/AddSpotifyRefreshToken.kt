@@ -5,6 +5,6 @@ import com.github.eliascoelho911.youplay.domain.repositories.SpotifyAuthorizatio
 class AddSpotifyRefreshToken(
     private val spotifyAuthorizationRepository: SpotifyAuthorizationRepository,
 ) {
-    suspend fun invoke(code: String) =
+    suspend fun add(code: String) =
         spotifyAuthorizationRepository.addRefreshToken(code)
 }
