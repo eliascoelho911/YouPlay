@@ -11,6 +11,6 @@ abstract class BaseTest {
 
     @Before
     open fun setup() {
-        MockKAnnotations.init()
+        MockKAnnotations.init(this)
     }
 }
