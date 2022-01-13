@@ -25,7 +25,6 @@ class UserExitFromRoom(
                         copyRemovingUsers(loggedUser.id)
                     }
                 }
-                //todo testar isso aqui
                 putCurrentRoomId.put(null)
             }.onFailure {
                 throw it
