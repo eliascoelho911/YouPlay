@@ -6,5 +6,5 @@ import com.github.eliascoelho911.youplay.domain.repositories.RoomRepository
 class GetRoomById(
     private val roomRepository: RoomRepository,
 ) {
-    suspend fun get(id: ID) = roomRepository.getRoomById(id)
+    fun get(id: ID) = roomRepository.getRoomById(id)
 }
