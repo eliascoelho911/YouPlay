@@ -2,11 +2,15 @@ package com.github.eliascoelho911.youplay.domain.usecases.user
 
 import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.common.Resource
-import com.github.eliascoelho911.youplay.domain.usecases.room.DeleteRoomById
+import com.github.eliascoelho911.youplay.domain.entities.Room
+import com.github.eliascoelho911.youplay.domain.entities.copyRemovingUsers
+import com.github.eliascoelho911.youplay.domain.usecases.room.DeleteCurrentRoom
 import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
-import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateRoom
+import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateCurrentRoom
+import com.github.eliascoelho911.youplay.domain.usecases.session.PutCurrentRoomId
 import com.github.eliascoelho911.youplay.roomMock
 import com.github.eliascoelho911.youplay.userMock
+import io.mockk.CapturingSlot
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -15,6 +19,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class UserExitFromRoomTest : BaseTest() {
@@ -25,10 +30,13 @@ class UserExitFromRoomTest : BaseTest() {
     private lateinit var getLoggedUser: GetLoggedUser
 
     @MockK
-    private lateinit var deleteRoomById: DeleteRoomById
+    private lateinit var deleteCurrentRoom: DeleteCurrentRoom
 
     @MockK
-    private lateinit var updateRoom: UpdateRoom
+    private lateinit var updateCurrentRoom: UpdateCurrentRoom
+
+    @MockK
+    private lateinit var putCurrentRoomId: PutCurrentRoomId
 
     @InjectMockKs
     private lateinit var userExitFromRoom: UserExitFromRoom
@@ -40,26 +48,31 @@ class UserExitFromRoomTest : BaseTest() {
 
         every { getCurrentRoom.get() } returns flowOf(Resource.success(room))
         every { getLoggedUser.get() } returns flowOf(Resource.success(loggedUser))
-        coEvery { deleteRoomById.delete(room.id) } returns Unit
+        coEvery { deleteCurrentRoom.delete() } returns Unit
+        coEvery { putCurrentRoomId.put(any()) } returns Unit
 
         runBlocking { userExitFromRoom.exit() }
 
-        coVerify { deleteRoomById.delete(room.id) }
+        coVerify { deleteCurrentRoom.delete() }
+        coVerify { putCurrentRoomId.put(null) }
     }
 
     @Test
     fun testDeveSairDaSalaQuandoUsuarioLogadoNaoForDonoDaSala() {
         val loggedUser = userMock
         val room = roomMock
-        val roomWithoutLoggedUser = room.copy(users = emptyList())
+        val roomWithoutLoggedUser = room.copyRemovingUsers(loggedUser.id)
 
         every { getCurrentRoom.get() } returns flowOf(Resource.success(room))
         every { getLoggedUser.get() } returns flowOf(Resource.success(loggedUser))
-        coEvery { updateRoom.update(roomWithoutLoggedUser) } returns Unit
+        coEvery { updateCurrentRoom.update(any()) } returns Unit
+        coEvery { putCurrentRoomId.put(any()) } returns Unit
 
         runBlocking { userExitFromRoom.exit() }
 
-        coVerify { updateRoom.update(roomWithoutLoggedUser) }
+        coVerify { putCurrentRoomId.put(null) }
+
+        verifyUpdateCurrentRoom(roomWithoutLoggedUser, room)
     }
 
     @Test(expected = Throwable::class)
@@ -75,5 +88,17 @@ class UserExitFromRoomTest : BaseTest() {
         every { getLoggedUser.get() } returns flowOf(Resource.failure(Throwable()))
 
         runBlocking { userExitFromRoom.exit() }
+    }
+
+    private fun verifyUpdateCurrentRoom(
+        roomWithoutLoggedUser: Room,
+        room: Room,
+    ) {
+        val slotRoomModification = CapturingSlot<suspend Room.() -> Room>()
+        coVerify { updateCurrentRoom.update(capture(slotRoomModification)) }
+
+        runBlocking {
+            assertEquals(roomWithoutLoggedUser, slotRoomModification.captured.invoke(room))
+        }
     }
 }
