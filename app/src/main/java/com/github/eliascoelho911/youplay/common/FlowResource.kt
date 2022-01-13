@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 
@@ -27,7 +26,7 @@ suspend inline fun <T> Flow<Resource<T>>.collectResource(crossinline action: sus
 suspend fun <T> Flow<Resource<T>>.lastResult(): Resource<T> {
     var result: Resource<T>? = null
     collect {
-        if ((it is Resource.Success) or (it is Resource.Failed))
+        if ((it is Resource.Success) or (it is Resource.Failure))
             result = it
     }
 

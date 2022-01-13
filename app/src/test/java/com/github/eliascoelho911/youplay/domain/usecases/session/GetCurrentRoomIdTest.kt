@@ -23,7 +23,7 @@ class GetCurrentRoomIdTest {
     }
 
     @Test
-    fun getCurrentRoomId() {
+    fun testGetCurrentRoomId() {
         val roomId = "roomId"
         coEvery { applicationSession.getCurrentRoomId() } returns roomId
 

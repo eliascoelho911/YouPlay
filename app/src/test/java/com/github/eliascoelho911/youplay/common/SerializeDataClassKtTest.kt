@@ -5,7 +5,7 @@ import org.junit.Test
 
 class SerializeDataClassKtTest {
     @Test
-    fun serializeToMap() {
+    fun testSerializeToMap() {
         val model = Model(arg1 = "arg1", arg2 = 2)
         val expected = mapOf("arg1" to "arg1", "arg2" to 2.0)
 

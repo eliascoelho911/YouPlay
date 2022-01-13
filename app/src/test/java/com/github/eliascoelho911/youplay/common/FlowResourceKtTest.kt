@@ -1,63 +1,61 @@
 package com.github.eliascoelho911.youplay.common
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.github.eliascoelho911.youplay.assertIsResourceFailure
+import com.github.eliascoelho911.youplay.assertIsResourceLoading
 import io.mockk.mockk
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.equalTo
-import org.hamcrest.Matchers.instanceOf
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import java.lang.Exception
 
 class FlowResourceKtTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
     @Test
-    fun `deve sempre emitir loading ao criar um flowResource`() {
+    fun testDeveSempreEmitirLoadingAoCriarUmFlowResource() {
         val flowBuilder: suspend (FlowCollector<Resource<Unit>>) -> Unit = mockk()
 
         val flow = flowResource(flowBuilder)
 
         runBlocking {
-            assertThat(flow.first(), instanceOf(Resource.Loading<Unit>()::class.java))
+            assertIsResourceLoading(flow.first())
         }
     }
 
     @Test
-    fun `deve sempre emitir loading ao criar um callbackFlowResource`() {
+    fun testDeveSempreEmitirLoadingAoCriarUmCallbackFlowResource() {
         val flow = callbackFlowResource<Unit> {
             awaitClose {}
         }
 
         runBlocking {
-            assertThat(flow.first(), instanceOf(Resource.Loading::class.java))
+            assertIsResourceLoading(flow.first())
         }
     }
 
     @Test
-    fun `deve buscar ultimo Success ou Failed quando chamar onLastResult`() {
+    fun testDeveBuscarUltimoSuccessOuFailedQuandoChamarOnLastResult() {
         val lastResultExpected = Resource.success(Unit)
-        val flow = flowOf(Resource.loading(), Resource.Failed(Throwable()), lastResultExpected)
+        val flow = flowOf(Resource.loading(), Resource.Failure(Throwable()), lastResultExpected)
 
         runBlocking {
-            assertThat(flow.lastResult(), equalTo(lastResultExpected))
+            assertEquals(lastResultExpected, flow.lastResult())
         }
     }
 
     @Test
-    fun `deve emit ResourceFailure quando erro`() {
+    fun testDeveEmitResourceFailureQuandoErro() {
         runBlocking {
-            val exception = NullPointerException()
-            val flow = flowResource<Unit> { throw exception }.emitErrors()
+            val throwable = Throwable()
+            val flow = flowResource<Unit> { throw throwable }.emitErrors()
 
-            assertThat(flow.lastResult(), equalTo(Resource.failure(exception)))
+            assertIsResourceFailure(flow.lastResult(), throwable)
         }
     }
 }

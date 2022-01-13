@@ -7,11 +7,11 @@ import com.github.eliascoelho911.youplay.domain.repositories.RoomRepository
 import com.github.eliascoelho911.youplay.domain.usecases.user.GetLoggedUser
 import io.mockk.CapturingSlot
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
@@ -20,7 +20,7 @@ import org.junit.Before
 import org.junit.Test
 
 class CreateNewRoomTest {
-    @RelaxedMockK
+    @MockK
     private lateinit var roomRepository: RoomRepository
 
     @MockK
@@ -35,7 +35,7 @@ class CreateNewRoomTest {
     }
 
     @Test
-    fun `deve criar uma nova sala quando encontrar loggedUser`() {
+    fun testDeveCriarUmaNovaSalaQuandoEncontrarLoggedUser() {
         val ownerIdExpected = "ownerId"
         val roomIdExpected = "roomId"
         val roomNameExpected = "roomName"
@@ -43,10 +43,11 @@ class CreateNewRoomTest {
             every { id } returns ownerIdExpected
         }
 
-        every { getLoggedUser.loggedUser } returns flowOf(Resource.success(userMock))
+        every { getLoggedUser.get() } returns flowOf(Resource.success(userMock))
+        coEvery { roomRepository.add(any()) } returns Unit
 
         runBlocking {
-            createNewRoom.invoke(roomIdExpected, roomNameExpected)
+            createNewRoom.create(roomIdExpected, roomNameExpected)
         }
 
         val roomCreated = CapturingSlot<Room>()
@@ -58,9 +59,9 @@ class CreateNewRoomTest {
     }
 
     @Test(expected = NoSuchElementException::class)
-    fun `deve lancar erro quando nao encontrar o loggedUser`() {
-        every { getLoggedUser.loggedUser } returns flowOf(Resource.failure(RuntimeException()))
+    fun testDeveLancarErroQuandoNaoEncontrarOLoggedUser() {
+        every { getLoggedUser.get() } returns flowOf(Resource.failure(RuntimeException()))
 
-        runBlocking { createNewRoom.invoke("id", "name") }
+        runBlocking { createNewRoom.create("id", "name") }
     }
 }

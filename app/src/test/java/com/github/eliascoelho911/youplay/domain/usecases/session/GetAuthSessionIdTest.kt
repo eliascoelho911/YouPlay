@@ -4,14 +4,14 @@ import com.github.eliascoelho911.youplay.domain.session.ApplicationSession
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
-import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
 class GetAuthSessionIdTest {
-    @RelaxedMockK
+    @MockK
     private lateinit var applicationSession: ApplicationSession
 
     @InjectMockKs
@@ -23,7 +23,7 @@ class GetAuthSessionIdTest {
     }
 
     @Test
-    fun getSessionId() {
+    fun testGetAuthSessionId() {
         val id = "id"
         coEvery { applicationSession.getAuthId() } returns id
 

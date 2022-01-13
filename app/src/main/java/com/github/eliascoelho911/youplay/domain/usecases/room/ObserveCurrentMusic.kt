@@ -19,7 +19,7 @@ class ObserveCurrentMusic(private val observeCurrentRoom: ObserveCurrentRoom) {
                         Resource.success(currentMusic)
                     }
                 }
-                is Resource.Failed -> {
+                is Resource.Failure -> {
                     Resource.failure(it.throwable)
                 }
                 is Resource.Loading -> {

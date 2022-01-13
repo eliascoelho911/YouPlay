@@ -5,16 +5,16 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.InjectMockKs
-import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
 class AuthenticateUserOnSpotifyTest {
-    @RelaxedMockK
+    @MockK
     private lateinit var addSpotifyRefreshToken: AddSpotifyRefreshToken
 
-    @RelaxedMockK
+    @MockK
     private lateinit var putAuthSessionId: PutAuthSessionId
 
     @InjectMockKs
@@ -26,14 +26,15 @@ class AuthenticateUserOnSpotifyTest {
     }
 
     @Test
-    fun authenticateUserOnSpotify() {
+    fun testAuthenticateUserOnSpotify() {
         val code = "code"
         val id = "id"
 
-        coEvery { addSpotifyRefreshToken.invoke(code) } returns id
+        coEvery { addSpotifyRefreshToken.add(code) } returns id
+        coEvery { putAuthSessionId.put(id) } returns Unit
 
-        runBlocking { authenticateUserOnSpotify.invoke(code) }
+        runBlocking { authenticateUserOnSpotify.authenticate(code) }
 
-        coVerify { putAuthSessionId.invoke(id) }
+        coVerify { putAuthSessionId.put(id) }
     }
 }

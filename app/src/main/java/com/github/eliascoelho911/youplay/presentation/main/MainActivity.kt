@@ -14,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.github.eliascoelho911.youplay.R
-import com.github.eliascoelho911.youplay.common.observeResource
 import com.github.eliascoelho911.youplay.presentation.navigation.Destination
 import com.github.eliascoelho911.youplay.presentation.screens.createroom.CreateRoomScreen
 import com.github.eliascoelho911.youplay.presentation.screens.createroom.CreateRoomViewModel
@@ -39,11 +38,9 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun ensureUserAuthentication() {
-        viewModel.userIsAuthenticatedOnSpotify.observeResource(this) {
-            onSuccess { userIsAuthenticatedOnSpotify ->
-                if (!userIsAuthenticatedOnSpotify) {
-                    requestUserAuthentication()
-                }
+        lifecycleScope.launch {
+            if (!viewModel.userIsAuthenticatedOnSpotify()) {
+                requestUserAuthentication()
             }
         }
     }

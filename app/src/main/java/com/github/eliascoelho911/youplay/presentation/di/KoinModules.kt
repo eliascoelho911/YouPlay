@@ -25,7 +25,6 @@ val viewModelModule = module {
     viewModel {
         MainViewModel(
             userIsAuthenticatedOnSpotify = get(),
-            coroutineContext = Dispatchers.IO,
             authenticateUserOnSpotify = get()
         )
     }

@@ -1,20 +1,20 @@
 package com.github.eliascoelho911.youplay.domain.usecases.spotify
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.github.eliascoelho911.youplay.common.collectResource
 import com.github.eliascoelho911.youplay.domain.usecases.session.GetAuthSessionId
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
-import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class UserIsAuthenticatedOnSpotifyTest {
-    @RelaxedMockK
+    @MockK
     private lateinit var getAuthSessionId: GetAuthSessionId
 
     @InjectMockKs
@@ -29,32 +29,22 @@ class UserIsAuthenticatedOnSpotifyTest {
     }
 
     @Test
-    fun userMustBeAuthenticatedWhenSessionIdIsNotNull() {
+    fun testUsuarioDeveEstarAutenticadoQuandoEncontrarOIdDaSessao() {
         val id = "id"
 
         coEvery { getAuthSessionId.get() } returns id
 
         runBlocking {
-            userIsAuthenticatedOnSpotify.isAuthenticated.collectResource {
-                onSuccess {
-                    assertTrue(it)
-                }
-            }
+            assertTrue(userIsAuthenticatedOnSpotify.get())
         }
     }
 
     @Test
-    fun userMustNotBeAuthenticatedWhenSessionIdIsNull() {
-        val id = null
-
-        coEvery { getAuthSessionId.get() } returns id
+    fun testUsuarioNaoDeveEstarAutenticadoQuandoNaoEncontrarOIdDaSessao() {
+        coEvery { getAuthSessionId.get() } returns null
 
         runBlocking {
-            userIsAuthenticatedOnSpotify.isAuthenticated.collectResource {
-                onSuccess {
-                    assertFalse(it)
-                }
-            }
+            assertFalse(userIsAuthenticatedOnSpotify.get())
         }
     }
 }
