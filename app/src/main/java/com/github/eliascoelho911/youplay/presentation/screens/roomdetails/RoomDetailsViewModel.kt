@@ -10,12 +10,12 @@ import kotlinx.coroutines.launch
 
 class RoomDetailsViewModel(
     private val userExitFromRoom: UserExitFromRoom,
-    observeCurrentRoom: ObserveCurrentRoom,
-    observeCurrentMusic: ObserveCurrentMusic,
+    private val observeCurrentRoom: ObserveCurrentRoom,
+    private val observeCurrentMusic: ObserveCurrentMusic,
 ) : ViewModel() {
 
-    val currentRoom = observeCurrentRoom.observe()
-    val currentMusic = observeCurrentMusic.observe()
+    val currentRoom get() = observeCurrentRoom.observe()
+    val currentMusic get() = observeCurrentMusic.observe()
 
     fun userExitFromRoom() {
         viewModelScope.launch {

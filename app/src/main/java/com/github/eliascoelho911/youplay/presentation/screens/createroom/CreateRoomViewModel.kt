@@ -14,9 +14,9 @@ class CreateRoomViewModel(
     private val createNewRoom: CreateNewRoom,
     private val enterTheRoom: EnterTheRoom,
     private val context: WeakReference<Context>,
-    getLoggedUser: GetLoggedUser,
+    private val getLoggedUser: GetLoggedUser,
 ) : ViewModel() {
-    val loggedUser = getLoggedUser.get()
+    val loggedUser get() = getLoggedUser.get()
 
     suspend fun createNewRoom(roomId: ID) {
         loggedUser.lastResult().onSuccess { loggedUser ->
