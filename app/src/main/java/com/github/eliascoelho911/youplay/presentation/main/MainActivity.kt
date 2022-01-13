@@ -20,6 +20,7 @@ import com.github.eliascoelho911.youplay.presentation.screens.createroom.CreateR
 import com.github.eliascoelho911.youplay.presentation.screens.roomdetails.RoomDetailsScreen
 import com.github.eliascoelho911.youplay.presentation.screens.roomdetails.RoomDetailsViewModel
 import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
+import com.github.eliascoelho911.youplay.presentation.util.RoomIDGenerator
 import com.github.eliascoelho911.youplay.presentation.util.navigate
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -68,9 +69,11 @@ class MainActivity : ComponentActivity() {
             CreateRoomScreen(viewModel = viewModel,
                 onClickToCreateRoom = {
                     createRoomButtonIsLoading = true
+                    val roomId = RoomIDGenerator.generate()
                     lifecycleScope.launch {
                         runCatching {
-                            viewModel.createNewRoom()
+                            viewModel.createNewRoom(roomId)
+                            viewModel.enterTheRoom(roomId)
                         }.onSuccess {
                             navController.navigate(Destination.RoomDetails)
                         }.onFailure {
