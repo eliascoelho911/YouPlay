@@ -1,5 +1,6 @@
 package com.github.eliascoelho911.youplay.domain.usecases.room
 
+import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.assertIsResourceFailure
 import com.github.eliascoelho911.youplay.assertIsResourceSuccess
 import com.github.eliascoelho911.youplay.common.Resource
@@ -16,17 +17,12 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-class ObserveRoomByIdTest {
+class ObserveRoomByIdTest: BaseTest() {
     @MockK
     private lateinit var roomRepository: RoomRepository
 
     @InjectMockKs
     private lateinit var observeRoomById: ObserveRoomById
-
-    @Before
-    fun setup() {
-        MockKAnnotations.init(this)
-    }
 
     @Test
     fun testObserveRoomById() {

@@ -1,6 +1,7 @@
 package com.github.eliascoelho911.youplay.domain.usecases.spotify
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.domain.usecases.session.GetAuthSessionId
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -13,20 +14,12 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class UserIsAuthenticatedOnSpotifyTest {
+class UserIsAuthenticatedOnSpotifyTest: BaseTest() {
     @MockK
     private lateinit var getAuthSessionId: GetAuthSessionId
 
     @InjectMockKs
     private lateinit var userIsAuthenticatedOnSpotify: UserIsAuthenticatedOnSpotify
-
-    @get:Rule
-    val rule = InstantTaskExecutorRule()
-
-    @Before
-    fun setup() {
-        MockKAnnotations.init(this)
-    }
 
     @Test
     fun testUsuarioDeveEstarAutenticadoQuandoEncontrarOIdDaSessao() {

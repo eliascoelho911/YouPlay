@@ -1,5 +1,6 @@
 package com.github.eliascoelho911.youplay.domain.usecases.session
 
+import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.domain.session.ApplicationSession
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -10,17 +11,12 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class GetCurrentRoomIdTest {
+class GetCurrentRoomIdTest: BaseTest() {
     @MockK
     private lateinit var applicationSession: ApplicationSession
 
     @InjectMockKs
     private lateinit var getCurrentRoomId: GetCurrentRoomId
-
-    @Before
-    fun setup() {
-        MockKAnnotations.init(this)
-    }
 
     @Test
     fun testGetCurrentRoomId() {

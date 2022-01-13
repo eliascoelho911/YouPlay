@@ -1,5 +1,6 @@
 package com.github.eliascoelho911.youplay.domain.usecases.room
 
+import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.common.Resource
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.entities.User
@@ -19,7 +20,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class CreateNewRoomTest {
+class CreateNewRoomTest: BaseTest() {
     @MockK
     private lateinit var roomRepository: RoomRepository
 
@@ -28,11 +29,6 @@ class CreateNewRoomTest {
 
     @InjectMockKs
     private lateinit var createNewRoom: CreateNewRoom
-
-    @Before
-    fun setup() {
-        MockKAnnotations.init(this)
-    }
 
     @Test
     fun testDeveCriarUmaNovaSalaQuandoEncontrarLoggedUser() {

@@ -1,5 +1,6 @@
 package com.github.eliascoelho911.youplay.domain.usecases.spotify
 
+import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.domain.repositories.SpotifyAuthorizationRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -10,17 +11,12 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-class AddSpotifyRefreshTokenTest {
+class AddSpotifyRefreshTokenTest: BaseTest() {
     @MockK
     private lateinit var spotifyAuthorizationRepository: SpotifyAuthorizationRepository
 
     @InjectMockKs
     private lateinit var addSpotifyRefreshToken: AddSpotifyRefreshToken
-
-    @Before
-    fun setup() {
-        MockKAnnotations.init(this)
-    }
 
     @Test
     fun testAddSpotifyRefreshToken() {

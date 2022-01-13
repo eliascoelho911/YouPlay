@@ -1,9 +1,10 @@
 package com.github.eliascoelho911.youplay.common
 
+import com.github.eliascoelho911.youplay.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class SerializeDataClassKtTest {
+class SerializeDataClassKtTest: BaseTest() {
     @Test
     fun testSerializeToMap() {
         val model = Model(arg1 = "arg1", arg2 = 2)

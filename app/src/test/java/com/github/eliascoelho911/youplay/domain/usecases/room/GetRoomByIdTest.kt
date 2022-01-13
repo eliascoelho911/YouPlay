@@ -1,5 +1,6 @@
 package com.github.eliascoelho911.youplay.domain.usecases.room
 
+import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.assertIsResourceSuccess
 import com.github.eliascoelho911.youplay.common.Resource
 import com.github.eliascoelho911.youplay.domain.entities.Room
@@ -14,17 +15,12 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-class GetRoomByIdTest {
+class GetRoomByIdTest: BaseTest() {
     @MockK
     private lateinit var roomRepository: RoomRepository
 
     @InjectMockKs
     private lateinit var getRoomById: GetRoomById
-
-    @Before
-    fun setup() {
-        MockKAnnotations.init(this)
-    }
 
     @Test
     fun testGetRoomById() {
