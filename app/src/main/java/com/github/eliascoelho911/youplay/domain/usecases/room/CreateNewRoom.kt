@@ -10,7 +10,6 @@ class CreateNewRoom(
     private val roomRepository: RoomRepository,
     private val getLoggedUser: GetLoggedUser,
 ) {
-    @Throws(NoSuchElementException::class)
     suspend fun create(id: String, name: String) {
         getLoggedUser.get().lastResult().onSuccess { user ->
             roomRepository.add(Room(
@@ -20,7 +19,7 @@ class CreateNewRoom(
                 currentMusicId = null,
                 player = PlayerData()))
         }.onFailure {
-            throw NoSuchElementException(it.message)
+            throw it
         }
     }
 }
