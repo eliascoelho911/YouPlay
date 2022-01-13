@@ -1,31 +1,21 @@
 package com.github.eliascoelho911.youplay.domain.usecases.room
 
-import com.github.eliascoelho911.youplay.common.Resource
+import com.github.eliascoelho911.youplay.common.collectResource
 import com.github.eliascoelho911.youplay.common.emitErrors
+import com.github.eliascoelho911.youplay.common.emitIfLoadingOrFailure
+import com.github.eliascoelho911.youplay.common.emitSuccess
 import com.github.eliascoelho911.youplay.common.flowResource
 import com.github.eliascoelho911.youplay.domain.entities.Music
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.map
 
 class ObserveCurrentMusic(private val observeCurrentRoom: ObserveCurrentRoom) {
     fun observe() = flowResource<Music> {
-        emitAll(observeCurrentRoom.observe().map {
-            when (it) {
-                is Resource.Success -> {
-                    val room = it.data
-                    room.currentMusicId!!.let { currentMusicId ->
-                        val currentMusic = room.playlist.find { it.id == currentMusicId }
-                            ?: room.playlist.first()
-                        Resource.success(currentMusic)
-                    }
-                }
-                is Resource.Failure -> {
-                    Resource.failure(it.throwable)
-                }
-                is Resource.Loading -> {
-                    Resource.loading()
+        observeCurrentRoom.observe().collectResource {
+            onSuccess { room ->
+                room.currentMusicId!!.let { currentMusicId ->
+                    emitSuccess(room.playlist.find { it.id == currentMusicId }!!)
                 }
             }
-        })
+            emitIfLoadingOrFailure(this)
+        }
     }.emitErrors()
 }
