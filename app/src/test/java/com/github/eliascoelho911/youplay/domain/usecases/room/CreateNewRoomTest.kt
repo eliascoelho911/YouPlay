@@ -54,7 +54,7 @@ class CreateNewRoomTest: BaseTest() {
         assertEquals(roomNameExpected, roomCreated.captured.name)
     }
 
-    @Test(expected = NoSuchElementException::class)
+    @Test(expected = RuntimeException::class)
     fun testDeveLancarErroQuandoNaoEncontrarOLoggedUser() {
         every { getLoggedUser.get() } returns flowOf(Resource.failure(RuntimeException()))
 
