@@ -1,27 +1,32 @@
 package com.github.eliascoelho911.youplay.domain.usecases.user
 
 import com.github.eliascoelho911.youplay.common.lastResult
-import com.github.eliascoelho911.youplay.domain.usecases.room.DeleteRoomById
+import com.github.eliascoelho911.youplay.domain.entities.copyAddingUsers
+import com.github.eliascoelho911.youplay.domain.entities.copyRemovingUsers
+import com.github.eliascoelho911.youplay.domain.usecases.room.DeleteCurrentRoom
 import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
-import com.github.eliascoelho911.youplay.domain.usecases.room.ObserveCurrentRoom
-import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateRoom
+import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateCurrentRoom
+import com.github.eliascoelho911.youplay.domain.usecases.session.PutCurrentRoomId
 
 class UserExitFromRoom(
-    private val getCurrentRoom: GetCurrentRoom,
     private val getLoggedUser: GetLoggedUser,
-    private val deleteRoomById: DeleteRoomById,
-    private val updateRoom: UpdateRoom,
+    private val putCurrentRoomId: PutCurrentRoomId,
+    private val getCurrentRoom: GetCurrentRoom,
+    private val deleteCurrentRoom: DeleteCurrentRoom,
+    private val updateCurrentRoom: UpdateCurrentRoom,
 ) {
     suspend fun exit() {
         getCurrentRoom.get().lastResult().onSuccess { currentRoom ->
             getLoggedUser.get().lastResult().onSuccess { loggedUser ->
                 if (currentRoom.ownerId == loggedUser.id) {
-                    deleteRoomById.delete(currentRoom.id)
+                    deleteCurrentRoom.delete()
                 } else {
-                    updateRoom.update(room = currentRoom.copy(
-                        users = currentRoom.users.toMutableList().apply { remove(loggedUser.id) }
-                    ))
+                    updateCurrentRoom.update {
+                        copyRemovingUsers(loggedUser.id)
+                    }
                 }
+                //todo testar isso aqui
+                putCurrentRoomId.put(null)
             }.onFailure {
                 throw it
             }
