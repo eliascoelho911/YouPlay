@@ -38,7 +38,7 @@ class ObserveRoomByIdTest: BaseTest() {
         runBlocking {
             val result = observeRoomById.observe(id).toList()
             assertIsResourceSuccess(result[0], room)
-            assertIsResourceFailure(result[1], throwable)
+            assertIsResourceFailure(result[1], Throwable::class.java)
         }
     }
 }

@@ -51,7 +51,7 @@ class FlowResourceKtTest : BaseTest() {
             val throwable = Throwable()
             val flow = flowResource<Unit> { throw throwable }.emitErrors()
 
-            assertIsResourceFailure(flow.lastResult(), throwable)
+            assertIsResourceFailure(flow.lastResult(), Throwable::class.java)
         }
     }
 }
