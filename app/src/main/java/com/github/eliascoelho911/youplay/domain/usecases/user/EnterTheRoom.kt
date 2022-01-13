@@ -17,6 +17,8 @@ class EnterTheRoom(
             updateCurrentRoom.update {
                 copyAddingUsers(loggedUser.id)
             }
+        }.onFailure {
+            throw it
         }
     }
 }
