@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun ButtonWithLoading(
     modifier: Modifier = Modifier,
+    buttonModifier: Modifier = Modifier,
     loading: Boolean,
     onClick: () -> Unit,
     buttonContent: @Composable () -> Unit,
@@ -41,7 +42,7 @@ fun ButtonWithLoading(
             AnimatedVisibility(visible = !loading,
                 enter = fadeIn(),
                 exit = fadeOut()) {
-                Button(onClick = onClick) {
+                Button(modifier = buttonModifier, onClick = onClick) {
                     buttonContent()
                 }
             }
