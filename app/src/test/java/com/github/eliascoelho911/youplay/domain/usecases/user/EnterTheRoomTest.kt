@@ -5,6 +5,8 @@ import com.github.eliascoelho911.youplay.common.Resource
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.entities.User
 import com.github.eliascoelho911.youplay.domain.entities.copyAddingUsers
+import com.github.eliascoelho911.youplay.domain.exceptions.RoomNotFoundException
+import com.github.eliascoelho911.youplay.domain.usecases.room.CheckIfRoomExistsById
 import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateCurrentRoom
 import com.github.eliascoelho911.youplay.domain.usecases.session.PutCurrentRoomId
 import com.github.eliascoelho911.youplay.roomMock
@@ -30,14 +32,18 @@ class EnterTheRoomTest : BaseTest() {
     @MockK
     private lateinit var updateCurrentRoom: UpdateCurrentRoom
 
+    @MockK
+    private lateinit var checkIfRoomExistsById: CheckIfRoomExistsById
+
     @InjectMockKs
     private lateinit var enterTheRoom: EnterTheRoom
 
     @Test
-    fun testEnterTheRoom() {
+    fun testDeveEntrarNaSalaQuandoElaExistir() {
         val user = userMock
         val roomId = "roomId"
 
+        coEvery { checkIfRoomExistsById.check(roomId) } returns true
         every { getLoggedUser.get() } returns flowOf(Resource.success(user))
         coEvery { putCurrentRoomId.put(roomId) } returns Unit
         coEvery { updateCurrentRoom.update(any()) } returns Unit
@@ -47,6 +53,15 @@ class EnterTheRoomTest : BaseTest() {
         coVerify { putCurrentRoomId.put(roomId) }
 
         verifyUpdateCurrentRoomAddingUser(user)
+    }
+
+    @Test(expected = RoomNotFoundException::class)
+    fun testDeveLancarErroQuandoSalaNaoExistir() {
+        val roomId = "roomId"
+
+        coEvery { checkIfRoomExistsById.check(roomId) } returns false
+
+        runBlocking { enterTheRoom.enter(roomId) }
     }
 
     private fun verifyUpdateCurrentRoomAddingUser(user: User) {
