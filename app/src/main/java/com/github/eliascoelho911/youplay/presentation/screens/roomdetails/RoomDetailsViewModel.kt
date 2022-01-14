@@ -8,6 +8,7 @@ import com.github.eliascoelho911.youplay.domain.usecases.user.UserExitFromRoom
 
 class RoomDetailsViewModel(
     private val userExitFromRoom: UserExitFromRoom,
+    private val updateCurrentRoom: UpdateCurrentRoom,
     private val observeCurrentRoom: ObserveCurrentRoom,
     private val observeCurrentMusic: ObserveCurrentMusic,
 ) : ViewModel() {
@@ -15,9 +16,11 @@ class RoomDetailsViewModel(
     val currentRoom by lazy { observeCurrentRoom.observe() }
     val currentMusic by lazy { observeCurrentMusic.observe() }
 
-    fun userExitFromRoom() {
-        viewModelScope.launch {
-            userExitFromRoom.exit()
-        }
+    suspend fun userExitFromRoom() {
+        userExitFromRoom.exit()
+    }
+
+    suspend fun updateCurrentRoomName(name: String) {
+        updateCurrentRoom.update { copy(name = name) }
     }
 }

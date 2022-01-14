@@ -99,11 +99,26 @@ class MainActivity : ComponentActivity() {
             RoomDetailsScreen(viewModel = viewModel,
                 backgroundColor = Color.Blue,
                 onConfirmExitFromRoom = {
-                    viewModel.userExitFromRoom()
-                    navController.popBackStack()
+                    lifecycleScope.launch {
+                        runCatching {
+                            viewModel.userExitFromRoom()
+                        }.onSuccess {
+                            navController.popBackStack()
+                        }.onFailure {
+                            showError(getString(R.string.error_exit_room))
+                        }
+                    }
                 },
                 onClickOptions = {},
-                onUpdateRoomName = {},
+                onUpdateRoomName = { name ->
+                    lifecycleScope.launch {
+                        runCatching {
+                            viewModel.updateCurrentRoomName(name)
+                        }.onFailure {
+                            showError(getString(R.string.errorUpdateRoomName))
+                        }
+                    }
+                },
                 onClickSkipToNextMusicButton = {},
                 onClickPlayOrPauseButton = {},
                 onClickSkipToPreviousMusicButton = {},

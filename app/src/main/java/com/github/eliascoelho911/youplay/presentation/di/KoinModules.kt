@@ -12,7 +12,7 @@ val viewModelModule = module {
         CreateRoomViewModel(get(), get(), context = WeakReference(get()), get())
     }
     viewModel {
-        RoomDetailsViewModel(get(), get(), get())
+        RoomDetailsViewModel(get(), get(), get(), get())
     }
     viewModel {
         MainViewModel(get(), get())
