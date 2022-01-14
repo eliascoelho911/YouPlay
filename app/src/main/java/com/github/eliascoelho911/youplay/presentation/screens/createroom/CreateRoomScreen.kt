@@ -1,26 +1,18 @@
 package com.github.eliascoelho911.youplay.presentation.screens.createroom
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.MaterialTheme.shapes
@@ -47,6 +39,7 @@ import coil.compose.rememberImagePainter
 import com.github.eliascoelho911.youplay.R
 import com.github.eliascoelho911.youplay.common.Resource
 import com.github.eliascoelho911.youplay.domain.entities.User
+import com.github.eliascoelho911.youplay.presentation.common.ButtonWithLoading
 import com.github.eliascoelho911.youplay.presentation.theme.Purple2C3863
 import com.github.eliascoelho911.youplay.presentation.theme.RedEC5462
 import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
@@ -212,32 +205,9 @@ private fun CreateRoomCardContent(buttonIsLoading: Boolean, onClickCreateRoomBut
 
         Spacer(Modifier.height(CreateRoomCardButtonMargin))
 
-        Box {
-            Row(modifier = Modifier.align(Alignment.Center),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center) {
-                AnimatedVisibility(visible = buttonIsLoading,
-                    enter = fadeIn(),
-                    exit = fadeOut()) {
-                    CircularProgressIndicator(modifier = Modifier
-                        .size(
-                            width = ButtonDefaults.MinHeight,
-                            height = ButtonDefaults.MinHeight
-                        ))
-                }
-            }
-            Row(modifier = Modifier.align(Alignment.Center),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center) {
-                AnimatedVisibility(visible = !buttonIsLoading,
-                    enter = fadeIn(),
-                    exit = fadeOut()) {
-                    Button(onClick = onClickCreateRoomButton) {
-                        Text(text = stringResource(id = R.string.createRoom_cardButton).uppercase(),
-                            style = typography.button, color = colors.background)
-                    }
-                }
-            }
+        ButtonWithLoading(loading = buttonIsLoading, onClick = onClickCreateRoomButton) {
+            Text(text = stringResource(id = R.string.createRoom_cardButton).uppercase(),
+                style = typography.button, color = colors.background)
         }
     }
 }
