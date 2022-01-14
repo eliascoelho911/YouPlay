@@ -7,6 +7,8 @@ sealed class Destination(private val name: String, private val arguments: List<N
 
     object RoomDetails: Destination(name = "roomDetails", arguments = emptyList())
 
+    object AccessRoom : Destination(name = "accessRoom", arguments = emptyList())
+
     val baseRoute: String
         get() {
             val argumentsJointed = arguments.joinToString(separator = "&", transform = {
