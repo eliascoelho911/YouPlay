@@ -38,7 +38,7 @@ val useCasesModule = module {
     single { UpdateRoom(get()) }
     single { DeleteCurrentRoom(get(), get()) }
     single { UpdateCurrentRoom(get(), get()) }
-    single { EnterTheRoom(get(), get(), get(), get()) }
+    single { EnterTheRoom(get(), get(), get()) }
     single { CheckIfRoomExistsById(get()) }
     single { UserExitFromRoom(get(), get(), get(), get(), get()) }
     single { PutAuthSessionId(get()) }

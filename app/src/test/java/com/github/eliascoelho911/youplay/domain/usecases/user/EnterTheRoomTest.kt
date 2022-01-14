@@ -32,9 +32,6 @@ class EnterTheRoomTest : BaseTest() {
     @MockK
     private lateinit var updateCurrentRoom: UpdateCurrentRoom
 
-    @MockK
-    private lateinit var checkIfRoomExistsById: CheckIfRoomExistsById
-
     @InjectMockKs
     private lateinit var enterTheRoom: EnterTheRoom
 
@@ -43,7 +40,6 @@ class EnterTheRoomTest : BaseTest() {
         val user = userMock
         val roomId = "roomId"
 
-        coEvery { checkIfRoomExistsById.check(roomId) } returns true
         every { getLoggedUser.get() } returns flowOf(Resource.success(user))
         coEvery { putCurrentRoomId.put(roomId) } returns Unit
         coEvery { updateCurrentRoom.update(any()) } returns Unit
@@ -53,15 +49,6 @@ class EnterTheRoomTest : BaseTest() {
         coVerify { putCurrentRoomId.put(roomId) }
 
         verifyUpdateCurrentRoomAddingUser(user)
-    }
-
-    @Test(expected = RoomNotFoundException::class)
-    fun testDeveLancarErroQuandoSalaNaoExistir() {
-        val roomId = "roomId"
-
-        coEvery { checkIfRoomExistsById.check(roomId) } returns false
-
-        runBlocking { enterTheRoom.enter(roomId) }
     }
 
     private fun verifyUpdateCurrentRoomAddingUser(user: User) {
