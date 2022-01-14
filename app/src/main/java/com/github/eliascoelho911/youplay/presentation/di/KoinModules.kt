@@ -1,6 +1,7 @@
 package com.github.eliascoelho911.youplay.presentation.di
 
 import com.github.eliascoelho911.youplay.presentation.main.MainViewModel
+import com.github.eliascoelho911.youplay.presentation.screens.accessroom.AccessRoomViewModel
 import com.github.eliascoelho911.youplay.presentation.screens.createroom.CreateRoomViewModel
 import com.github.eliascoelho911.youplay.presentation.screens.roomdetails.RoomDetailsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -16,5 +17,8 @@ val viewModelModule = module {
     }
     viewModel {
         MainViewModel(get(), get())
+    }
+    viewModel {
+        AccessRoomViewModel(get())
     }
 }

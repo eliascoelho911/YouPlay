@@ -49,7 +49,8 @@ class MainActivity : ComponentActivity() {
                         navController,
                         showError = { showError(it) })
                     accessRoomScreenImpl(navGraphBuilder = this,
-                        navController)
+                        navController,
+                        showError = { showError(it) })
                 }
             }
         }

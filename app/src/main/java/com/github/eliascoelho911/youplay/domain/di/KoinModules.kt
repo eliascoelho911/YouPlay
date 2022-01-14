@@ -1,5 +1,6 @@
 package com.github.eliascoelho911.youplay.domain.di
 
+import com.github.eliascoelho911.youplay.domain.usecases.room.CheckIfRoomExistsById
 import com.github.eliascoelho911.youplay.domain.usecases.room.CreateNewRoom
 import com.github.eliascoelho911.youplay.domain.usecases.room.DeleteCurrentRoom
 import com.github.eliascoelho911.youplay.domain.usecases.room.DeleteRoomById
@@ -37,7 +38,8 @@ val useCasesModule = module {
     single { UpdateRoom(get()) }
     single { DeleteCurrentRoom(get(), get()) }
     single { UpdateCurrentRoom(get(), get()) }
-    single { EnterTheRoom(get(), get(), get()) }
+    single { EnterTheRoom(get(), get(), get(), get()) }
+    single { CheckIfRoomExistsById(get()) }
     single { UserExitFromRoom(get(), get(), get(), get(), get()) }
     single { PutAuthSessionId(get()) }
     single { AddSpotifyRefreshToken(get()) }

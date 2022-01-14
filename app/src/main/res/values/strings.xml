@@ -77,7 +77,7 @@
     <string name="errorOnTimelineTimeChange">Erro ao mover a linha do tempo da música</string>
     <string name="errorOnChangeRepeatModeToNext">Erro ao alterar o modo de repetição</string>
     <string name="noInternetConnection">Sem conexão com a internet</string>
-    <string name="accessRoom_roomNotFound">Essa sala não foi encontrada</string>
+    <string name="accessRoom_roomNotFound">Não foi encontrada nenhuma sala com esse código</string>
     <string name="accessRoom_errorOnAccessTheRoom">Erro ao acessar essa sala</string>
     <string name="roomDetails_errorOnLeaveTheRoom">Erro ao sair da sala</string>
     <string name="roomDetails_repeatButtonDescription">Repetir</string>
