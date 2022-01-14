@@ -19,7 +19,6 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Scaffold
@@ -48,6 +47,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import coil.compose.rememberImagePainter
 import com.github.eliascoelho911.youplay.R
 import com.github.eliascoelho911.youplay.common.Resource
@@ -80,6 +80,7 @@ fun RoomDetailsScreen(
     val roomResource by viewModel.currentRoom.collectAsState(initial = Resource.loading())
     val currentMusicResource by viewModel.currentMusic.collectAsState(initial = Resource.loading())
     var showExitFromRoomDialog by remember { mutableStateOf(false) }
+    var showLoadingAction by remember { mutableStateOf(false) }
 
     Box(Modifier.fillMaxSize()) {
         Background(color = backgroundColor)
@@ -109,10 +110,21 @@ fun RoomDetailsScreen(
         if (showExitFromRoomDialog)
             ExitFromRoomDialog(onConfirmExitFromRoom = {
                 showExitFromRoomDialog = false
+                showLoadingAction = true
                 onConfirmExitFromRoom()
             }, onDismissExitRoom = {
                 showExitFromRoomDialog = false
             })
+
+        if (showLoadingAction)
+            LoadingAction()
+    }
+}
+
+@Composable
+private fun LoadingAction() {
+    Dialog(onDismissRequest = {}) {
+        CircularProgressIndicator()
     }
 }
 
@@ -172,6 +184,7 @@ private fun RoomDetailsTopBar(
     onClickOptions: () -> Unit,
 ) {
     var title by remember { mutableStateOf(roomName) }
+    title = roomName
     AppTopBarWithCentralizedTitle(modifier = Modifier.statusBarsPadding(),
         iconBack = Icons.Rounded.Close,
         title = {
@@ -288,6 +301,17 @@ private fun RoomDetailsContentPreview() {
             onTimeChange = {},
             onClickShuffleButton = {},
             onClickRepeatButton = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun ExitFromRoomDialogPreview() {
+    YouPlayTheme {
+        ExitFromRoomDialog(
+            onConfirmExitFromRoom = {},
+            onDismissExitRoom = {},
         )
     }
 }
