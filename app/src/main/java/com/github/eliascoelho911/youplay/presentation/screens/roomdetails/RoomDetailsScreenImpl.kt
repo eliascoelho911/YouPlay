@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.github.eliascoelho911.youplay.R
 import com.github.eliascoelho911.youplay.presentation.navigation.Destination
+import com.github.eliascoelho911.youplay.presentation.util.navigate
 import com.google.accompanist.navigation.animation.composable
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,7 +27,9 @@ fun ComponentActivity.roomDetailsScreenImpl(
                     runCatching {
                         viewModel.userExitFromRoom()
                     }.onSuccess {
-                        navController.popBackStack()
+                        navController.navigate(Destination.CreateRoom) {
+                            popUpTo(0)
+                        }
                     }.onFailure {
                         showError(getString(R.string.error_exit_room))
                     }

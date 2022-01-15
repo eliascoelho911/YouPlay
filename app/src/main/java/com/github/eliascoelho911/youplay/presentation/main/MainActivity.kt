@@ -14,6 +14,7 @@ import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -38,9 +39,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             YouPlayTheme {
                 val navController = rememberAnimatedNavController()
+                val userIsInSomeRoom = runBlocking { viewModel.userIsInSomeRoom() }
+                val startDestination = if (userIsInSomeRoom)
+                    Destination.RoomDetails
+                else
+                    Destination.CreateRoom
                 AnimatedNavHost(
                     navController = navController,
-                    startDestination = Destination.CreateRoom.baseRoute
+                    startDestination = startDestination.baseRoute
                 ) {
                     createRoomScreenImpl(navGraphBuilder = this,
                         navController,

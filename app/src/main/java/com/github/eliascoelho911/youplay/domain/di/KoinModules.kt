@@ -21,6 +21,7 @@ import com.github.eliascoelho911.youplay.domain.usecases.spotify.UserIsAuthentic
 import com.github.eliascoelho911.youplay.domain.usecases.user.EnterTheRoom
 import com.github.eliascoelho911.youplay.domain.usecases.user.GetLoggedUser
 import com.github.eliascoelho911.youplay.domain.usecases.user.UserExitFromRoom
+import com.github.eliascoelho911.youplay.domain.usecases.user.UserIsInSomeRoom
 import org.koin.dsl.module
 
 val useCasesModule = module {
@@ -40,6 +41,7 @@ val useCasesModule = module {
     single { UpdateCurrentRoom(get(), get()) }
     single { EnterTheRoom(get(), get(), get()) }
     single { CheckIfRoomExistsById(get()) }
+    single { UserIsInSomeRoom(get()) }
     single { UserExitFromRoom(get(), get(), get(), get(), get()) }
     single { PutAuthSessionId(get()) }
     single { AddSpotifyRefreshToken(get()) }

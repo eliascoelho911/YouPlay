@@ -7,7 +7,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.github.eliascoelho911.youplay.R
-import com.github.eliascoelho911.youplay.domain.exceptions.RoomNotFoundException
 import com.github.eliascoelho911.youplay.presentation.main.slideInHorizontallyTransition
 import com.github.eliascoelho911.youplay.presentation.main.slideOutHorizontallyTransition
 import com.github.eliascoelho911.youplay.presentation.navigation.Destination
@@ -20,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 fun ComponentActivity.accessRoomScreenImpl(
     navGraphBuilder: NavGraphBuilder,
     navController: NavHostController,
-    showError: (error: String) -> Unit
+    showError: (error: String) -> Unit,
 ) {
     navGraphBuilder.composable(Destination.AccessRoom.baseRoute, enterTransition = { _, _ ->
         slideInHorizontallyTransition()
@@ -48,12 +47,8 @@ fun ComponentActivity.accessRoomScreenImpl(
                         viewModel.enterTheRoom(roomId)
                     }.onSuccess {
                         navController.navigate(Destination.RoomDetails)
-                    }.onFailure { exception ->
-                        if (exception is RoomNotFoundException) {
-                            showError(getString(R.string.accessRoom_roomNotFound))
-                        } else {
-                            showError(getString(R.string.accessRoom_errorOnAccessTheRoom))
-                        }
+                    }.onFailure {
+                        showError(getString(R.string.accessRoom_errorOnAccessTheRoom))
                     }
                 }
             })

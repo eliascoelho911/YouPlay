@@ -16,7 +16,7 @@ val viewModelModule = module {
         RoomDetailsViewModel(get(), get(), get(), get())
     }
     viewModel {
-        MainViewModel(get(), get())
+        MainViewModel(get(), get(), get())
     }
     viewModel {
         AccessRoomViewModel(get())
