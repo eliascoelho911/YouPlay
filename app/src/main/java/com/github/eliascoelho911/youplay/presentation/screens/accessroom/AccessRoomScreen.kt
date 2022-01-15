@@ -30,12 +30,12 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.github.eliascoelho911.youplay.R
+import com.github.eliascoelho911.youplay.presentation.common.AppTopBarWithCentralizedTitle
 import com.github.eliascoelho911.youplay.presentation.common.ButtonWithLoading
 import com.github.eliascoelho911.youplay.presentation.common.CodeTextField
-import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
-import com.github.eliascoelho911.youplay.presentation.common.AppTopBarWithCentralizedTitle
-import com.github.eliascoelho911.youplay.presentation.util.RoomIDGenerator
 import com.github.eliascoelho911.youplay.presentation.common.screenPadding
+import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
+import com.github.eliascoelho911.youplay.presentation.util.RoomIDGenerator
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
@@ -113,8 +113,8 @@ private fun AccessWithCode(
         color = Color.White.copy(alpha = 0.6f))
     Spacer(Modifier.height(AccessWithCodeTextFieldMargin))
     ConstraintLayout {
-        var code by remember { mutableStateOf(mapOf<Int, String>()) }
         val (codeTextFieldRef, buttonRef) = createRefs()
+        var code by remember { mutableStateOf("") }
 
         CodeTextField(
             modifier = Modifier.constrainAs(codeTextFieldRef) {
@@ -122,13 +122,10 @@ private fun AccessWithCode(
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             },
-            code = code,
-            onValueChange = { position, newValue ->
-                code = code.toMutableMap().apply {
-                    put(position, newValue)
-                }
+            codeLength = RoomIDGenerator.LengthRoomUUID,
+            whenFull = {
+                code = it
             },
-            amountOfCodeBoxes = RoomIDGenerator.LengthRoomUUID
         )
 
         ButtonWithLoading(modifier = Modifier.constrainAs(buttonRef) {
@@ -140,7 +137,7 @@ private fun AccessWithCode(
         },
             buttonModifier = Modifier.fillMaxWidth(),
             loading = roomAccessIsLoading,
-            onClick = { onClickAccessWithCodeButton(code.values.joinToString(separator = "")) },
+            onClick = { onClickAccessWithCodeButton(code) },
             buttonContent = {
                 Text(text = stringResource(id = R.string.accessRoom_withCodeButton).uppercase(),
                     color = colors.background, style = typography.button)

@@ -1,126 +1,99 @@
 package com.github.eliascoelho911.youplay.presentation.common
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusOrder
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun CodeTextField(
-    modifier: Modifier = Modifier,
-    code: Map<Int, String>,
-    onValueChange: (position: Int, String) -> Unit,
-    amountOfCodeBoxes: Int,
+    modifier: Modifier,
+    codeLength: Int = 5,
+    whenFull: (smsCode: String) -> Unit,
 ) {
-    val focusRequesters = List(amountOfCodeBoxes) { FocusRequester() }
-    val focusManager = LocalFocusManager.current
+    val enteredCode = remember {
+        mutableStateListOf(
+            *((0 until codeLength).map { "" }.toTypedArray())
+        )
+    }
+    val focusRequesters: List<FocusRequester> = remember {
+        (0 until codeLength).map { FocusRequester() }
+    }
     Row(modifier) {
-        for (position in 0 until amountOfCodeBoxes) {
-            if (position in 1 until amountOfCodeBoxes)
-                Spacer(Modifier.width(CodeBoxItemMargin))
-
-            val currentFocusRequester = focusRequesters[position]
-            val nextFocusRequester = focusRequesters.getOrNull(position + 1)
-
-            CodeBoxItem(focusRequester = currentFocusRequester,
-                nextFocusRequester = nextFocusRequester,
-                focusManager = focusManager,
-                value = code.getOrDefault(position, ""),
-                onValueChange = { newValue ->
-                    val maxLength = 1
-                    if (newValue.length > maxLength) {
-                        if (currentFocusRequester.captureFocus()) {
-                            val oldValue = code[position]
-                            val lastValueEntered = keepOnlyLastEnteredValue(oldValue, newValue)
-                            onValueChange(position, lastValueEntered.uppercase())
-                            currentFocusRequester.freeFocus()
+        (0 until codeLength).forEach { index ->
+            TextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .onKeyEvent { event ->
+                        val cellValue = enteredCode[index]
+                        if (event.type == KeyEventType.KeyUp) {
+                            if (event.key == Key.Backspace && cellValue == "") {
+                                focusRequesters
+                                    .getOrNull(index - 1)
+                                    ?.requestFocus()
+                                enteredCode[index - 1] = ""
+                            } else if (cellValue != "") {
+                                focusRequesters
+                                    .getOrNull(index + 1)
+                                    ?.requestFocus()
+                            }
                         }
-                    } else {
-                        onValueChange(position, newValue.uppercase())
+                        false
                     }
-
-                    val isLast = position == amountOfCodeBoxes - 1
-                    if (isLast)
-                        focusManager.clearFocus(force = true)
-                    else if (newValue.isNotEmpty())
-                        nextFocusRequester?.requestFocus()
-                }
+                    .focusOrder(focusRequesters[index])
+                    .focusRequester(focusRequesters[index]),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = colors.background,
+                    unfocusedIndicatorColor = colors.onBackground,
+                    focusedIndicatorColor = colors.onBackground,
+                    cursorColor = colors.onBackground,
+                    textColor = colors.onBackground
+                ),
+                textStyle = MaterialTheme.typography.h5.copy(textAlign = TextAlign.Center),
+                singleLine = true,
+                value = enteredCode[index],
+                onValueChange = {
+                    val value = it.uppercase()
+                    if (value.length > 1) {
+                        enteredCode[index] = value.last().toString()
+                        return@TextField
+                    }
+                    if (focusRequesters[index].freeFocus()) {
+                        enteredCode[index] = value
+                        if (enteredCode[index].isBlank() && index > 0 && index < 5) {
+                            focusRequesters[index - 1].requestFocus()
+                        } else if (index < codeLength - 1) {
+                            focusRequesters[index + 1].requestFocus()
+                        } else if (enteredCode.size == 5) {
+                            whenFull(enteredCode.joinToString(separator = ""))
+                        }
+                    }
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Next
+                ),
             )
+            Spacer(modifier = Modifier.width(4.dp))
         }
     }
 }
-
-@Composable
-private fun CodeBoxItem(
-    focusRequester: FocusRequester,
-    nextFocusRequester: FocusRequester?,
-    focusManager: FocusManager,
-    value: String,
-    onValueChange: (String) -> Unit,
-) {
-    Box(Modifier
-        .size(CodeBoxSize)
-        .border(CodeBoxBorderWidth, Color.White.copy(alpha = 0.6f), MaterialTheme.shapes.small)
-        .clip(MaterialTheme.shapes.small)
-        .focusOrder(focusRequester) {
-            nextFocusRequester?.requestFocus()
-        }) {
-        val keyboardOptions = if (nextFocusRequester == null)
-            KeyboardOptions(imeAction = ImeAction.Done)
-        else
-            KeyboardOptions(imeAction = ImeAction.Next)
-
-        BasicTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center),
-            value = value,
-            onValueChange = onValueChange,
-            textStyle = MaterialTheme.typography.h5.copy(color = colors.onBackground,
-                textAlign = TextAlign.Center),
-            cursorBrush = SolidColor(colors.onBackground),
-            keyboardOptions = keyboardOptions,
-            keyboardActions = KeyboardActions(onDone = {
-                focusManager.clearFocus(force = true)
-            }))
-    }
-}
-
-private fun keepOnlyLastEnteredValue(
-    oldValue: String?,
-    newValue: String,
-): String {
-    val lastValueEntered = oldValue?.let { currentValue ->
-        newValue.replaceFirst(currentValue, "")
-    } ?: newValue
-
-    return if (lastValueEntered.length > 1)
-        lastValueEntered.last().toString()
-    else
-        lastValueEntered
-}
-
-private val CodeBoxSize = 48.dp
-private val CodeBoxBorderWidth = 1.dp
-private val CodeBoxItemMargin = 8.dp
