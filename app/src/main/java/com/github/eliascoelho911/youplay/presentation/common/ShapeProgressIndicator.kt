@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.presentation.util
+package com.github.eliascoelho911.youplay.presentation.common
 
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable

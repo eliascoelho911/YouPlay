@@ -33,9 +33,9 @@ import com.github.eliascoelho911.youplay.R
 import com.github.eliascoelho911.youplay.presentation.common.ButtonWithLoading
 import com.github.eliascoelho911.youplay.presentation.common.CodeTextField
 import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
-import com.github.eliascoelho911.youplay.presentation.util.AppTopBarWithCentralizedTitle
+import com.github.eliascoelho911.youplay.presentation.common.AppTopBarWithCentralizedTitle
 import com.github.eliascoelho911.youplay.presentation.util.RoomIDGenerator
-import com.github.eliascoelho911.youplay.presentation.util.screenPadding
+import com.github.eliascoelho911.youplay.presentation.common.screenPadding
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 

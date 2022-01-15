@@ -43,9 +43,9 @@ import com.github.eliascoelho911.youplay.presentation.common.ButtonWithLoading
 import com.github.eliascoelho911.youplay.presentation.theme.Purple2C3863
 import com.github.eliascoelho911.youplay.presentation.theme.RedEC5462
 import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
-import com.github.eliascoelho911.youplay.presentation.util.AppTopBar
-import com.github.eliascoelho911.youplay.presentation.util.ShapeProgressIndicator
-import com.github.eliascoelho911.youplay.presentation.util.screenPadding
+import com.github.eliascoelho911.youplay.presentation.common.AppTopBar
+import com.github.eliascoelho911.youplay.presentation.common.ShapeProgressIndicator
+import com.github.eliascoelho911.youplay.presentation.common.screenPadding
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 

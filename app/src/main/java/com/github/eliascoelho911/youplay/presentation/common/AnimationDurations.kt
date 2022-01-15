@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.presentation.util
+package com.github.eliascoelho911.youplay.presentation.common
 
 object AnimationDurations {
     const val long = 700
