@@ -2,7 +2,6 @@ package com.github.eliascoelho911.youplay.presentation.screens.createroom
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -20,6 +19,7 @@ import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,7 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,13 +38,13 @@ import coil.compose.rememberImagePainter
 import com.github.eliascoelho911.youplay.R
 import com.github.eliascoelho911.youplay.common.Resource
 import com.github.eliascoelho911.youplay.domain.entities.User
+import com.github.eliascoelho911.youplay.presentation.common.AppTopBar
 import com.github.eliascoelho911.youplay.presentation.common.ButtonWithLoading
+import com.github.eliascoelho911.youplay.presentation.common.ShapeProgressIndicator
+import com.github.eliascoelho911.youplay.presentation.common.screenPadding
 import com.github.eliascoelho911.youplay.presentation.theme.Purple2C3863
 import com.github.eliascoelho911.youplay.presentation.theme.RedEC5462
 import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
-import com.github.eliascoelho911.youplay.presentation.common.AppTopBar
-import com.github.eliascoelho911.youplay.presentation.common.ShapeProgressIndicator
-import com.github.eliascoelho911.youplay.presentation.common.screenPadding
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
@@ -226,13 +225,13 @@ private fun EnterRoomClickableMessage(
 ) {
     Box(Modifier.fillMaxWidth()) {
         user.onSuccess {
-            Text(modifier = Modifier
-                .clickable(onClick = onClickEnterTheRoom)
-                .padding(EnterRoomTextPadding)
+            TextButton(modifier = Modifier
                 .align(Alignment.Center),
-                text = stringResource(id = R.string.createRoom_enterRoom),
-                style = typography.subtitle2,
-                color = colors.onBackground, textAlign = TextAlign.Center)
+                onClick = onClickEnterTheRoom) {
+                Text(text = stringResource(id = R.string.createRoom_enterRoom),
+                    color = colors.onBackground,
+                    style = typography.subtitle2)
+            }
         }.onLoading {
             EnterRoomClickableMessageProgressIndicator()
         }.onFailure {
