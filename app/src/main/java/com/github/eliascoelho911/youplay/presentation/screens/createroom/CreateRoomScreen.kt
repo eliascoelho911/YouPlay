@@ -204,10 +204,13 @@ private fun CreateRoomCardContent(buttonIsLoading: Boolean, onClickCreateRoomBut
 
         Spacer(Modifier.height(CreateRoomCardButtonMargin))
 
-        ButtonWithLoading(loading = buttonIsLoading, onClick = onClickCreateRoomButton) {
-            Text(text = stringResource(id = R.string.createRoom_cardButton).uppercase(),
-                style = typography.button, color = colors.background)
-        }
+        ButtonWithLoading(
+            loading = buttonIsLoading, onClick = onClickCreateRoomButton,
+            buttonContent = {
+                Text(text = stringResource(id = R.string.createRoom_cardButton).uppercase(),
+                    style = typography.button, color = colors.background)
+            },
+        )
     }
 }
 

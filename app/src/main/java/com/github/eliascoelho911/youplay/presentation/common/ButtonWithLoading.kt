@@ -21,6 +21,7 @@ fun ButtonWithLoading(
     loading: Boolean,
     onClick: () -> Unit,
     buttonContent: @Composable () -> Unit,
+    buttonIsEnabled: Boolean = true,
 ) {
     Box(modifier) {
         Row(modifier = Modifier.align(Alignment.Center),
@@ -42,7 +43,7 @@ fun ButtonWithLoading(
             AnimatedVisibility(visible = !loading,
                 enter = fadeIn(),
                 exit = fadeOut()) {
-                Button(modifier = buttonModifier, onClick = onClick) {
+                Button(modifier = buttonModifier, onClick = onClick, enabled = buttonIsEnabled) {
                     buttonContent()
                 }
             }

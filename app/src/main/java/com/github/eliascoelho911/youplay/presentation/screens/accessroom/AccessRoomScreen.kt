@@ -1,17 +1,13 @@
 package com.github.eliascoelho911.youplay.presentation.screens.accessroom
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Scaffold
@@ -24,11 +20,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -130,22 +124,28 @@ private fun AccessWithCode(
             whenFull = {
                 code = it
             },
+            whenNotFull = {
+                code = ""
+            }
         )
 
-        ButtonWithLoading(modifier = Modifier.constrainAs(buttonRef) {
-            top.linkTo(codeTextFieldRef.bottom, AccessWithCodeButtonMargin)
-            start.linkTo(codeTextFieldRef.start)
-            end.linkTo(codeTextFieldRef.end)
+        ButtonWithLoading(
+            modifier = Modifier.constrainAs(buttonRef) {
+                top.linkTo(codeTextFieldRef.bottom, AccessWithCodeButtonMargin)
+                start.linkTo(codeTextFieldRef.start)
+                end.linkTo(codeTextFieldRef.end)
 
-            width = Dimension.fillToConstraints
-        },
+                width = Dimension.fillToConstraints
+            },
             buttonModifier = Modifier.fillMaxWidth(),
             loading = roomAccessIsLoading,
+            buttonIsEnabled = code.length == RoomIDGenerator.LengthRoomUUID,
             onClick = { onClickAccessWithCodeButton(code) },
             buttonContent = {
                 Text(text = stringResource(id = R.string.accessRoom_withCodeButton).uppercase(),
                     color = colors.background, style = typography.button)
-            })
+            },
+        )
     }
 }
 

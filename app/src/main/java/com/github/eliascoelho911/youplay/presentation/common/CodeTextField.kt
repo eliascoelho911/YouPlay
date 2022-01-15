@@ -21,7 +21,6 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -30,6 +29,7 @@ fun CodeTextField(
     modifier: Modifier,
     codeLength: Int = 5,
     whenFull: (smsCode: String) -> Unit,
+    whenNotFull: () -> Unit,
 ) {
     val enteredCode = remember {
         mutableStateListOf(
@@ -84,8 +84,12 @@ fun CodeTextField(
                             focusRequesters[index - 1].requestFocus()
                         } else if (index < codeLength - 1) {
                             focusRequesters[index + 1].requestFocus()
-                        } else if (enteredCode.size == 5) {
+                        }
+
+                        if (enteredCode.size == 5) {
                             whenFull(enteredCode.joinToString(separator = ""))
+                        } else {
+                            whenNotFull()
                         }
                     }
                 },
