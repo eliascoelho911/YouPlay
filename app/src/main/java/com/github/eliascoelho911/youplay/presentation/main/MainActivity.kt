@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.lifecycleScope
 import com.github.eliascoelho911.youplay.presentation.navigation.Destination
 import com.github.eliascoelho911.youplay.presentation.screens.accessroom.accessRoomScreenImpl
@@ -40,10 +41,7 @@ class MainActivity : ComponentActivity() {
             YouPlayTheme {
                 val navController = rememberAnimatedNavController()
                 val userIsInSomeRoom = runBlocking { viewModel.userIsInSomeRoom() }
-                val startDestination = if (userIsInSomeRoom)
-                    Destination.RoomDetails
-                else
-                    Destination.CreateRoom
+                val startDestination = startDestinationConsidering(userIsInSomeRoom)
                 AnimatedNavHost(
                     navController = navController,
                     startDestination = startDestination.baseRoute
@@ -61,6 +59,12 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    @Composable
+    private fun startDestinationConsidering(userIsInSomeRoom: Boolean) = if (userIsInSomeRoom)
+        Destination.RoomDetails
+    else
+        Destination.CreateRoom
 
     private fun showError(message: String) {
         //TODO Mostrar o erro de uma forma mais bonita
