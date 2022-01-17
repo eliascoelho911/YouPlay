@@ -4,7 +4,7 @@ import com.github.eliascoelho911.youplay.common.lastResult
 import com.github.eliascoelho911.youplay.domain.entities.ID
 import com.github.eliascoelho911.youplay.domain.entities.copyAddingUsers
 import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateCurrentRoom
-import com.github.eliascoelho911.youplay.domain.usecases.session.PutCurrentRoomId
+import com.github.eliascoelho911.youplay.domain.common.session.PutCurrentRoomId
 
 class EnterTheRoom(
     private val getLoggedUser: GetLoggedUser,

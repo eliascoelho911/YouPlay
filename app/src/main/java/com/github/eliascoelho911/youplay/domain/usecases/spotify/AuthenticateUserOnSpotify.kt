@@ -1,6 +1,7 @@
 package com.github.eliascoelho911.youplay.domain.usecases.spotify
 
-import com.github.eliascoelho911.youplay.domain.usecases.session.PutAuthSessionId
+import com.github.eliascoelho911.youplay.domain.common.session.PutAuthSessionId
+import com.github.eliascoelho911.youplay.domain.common.spotify.AddSpotifyRefreshToken
 
 class AuthenticateUserOnSpotify(
     private val addSpotifyRefreshToken: AddSpotifyRefreshToken,

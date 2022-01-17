@@ -1,17 +1,14 @@
 package com.github.eliascoelho911.youplay.domain.usecases.spotify
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.github.eliascoelho911.youplay.BaseTest
-import com.github.eliascoelho911.youplay.domain.usecases.session.GetAuthSessionId
-import io.mockk.MockKAnnotations
+import com.github.eliascoelho911.youplay.domain.common.session.GetAuthSessionId
+import com.github.eliascoelho911.youplay.domain.common.spotify.UserIsAuthenticatedOnSpotify
 import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 class UserIsAuthenticatedOnSpotifyTest: BaseTest() {

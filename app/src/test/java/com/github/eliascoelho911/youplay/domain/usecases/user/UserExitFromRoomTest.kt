@@ -7,7 +7,7 @@ import com.github.eliascoelho911.youplay.domain.entities.copyRemovingUsers
 import com.github.eliascoelho911.youplay.domain.usecases.room.DeleteCurrentRoom
 import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
 import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateCurrentRoom
-import com.github.eliascoelho911.youplay.domain.usecases.session.PutCurrentRoomId
+import com.github.eliascoelho911.youplay.domain.common.session.PutCurrentRoomId
 import com.github.eliascoelho911.youplay.roomMock
 import com.github.eliascoelho911.youplay.userMock
 import io.mockk.CapturingSlot

@@ -1,12 +1,11 @@
 package com.github.eliascoelho911.youplay.domain.usecases.user
 
 import com.github.eliascoelho911.youplay.common.lastResult
-import com.github.eliascoelho911.youplay.domain.entities.copyAddingUsers
 import com.github.eliascoelho911.youplay.domain.entities.copyRemovingUsers
 import com.github.eliascoelho911.youplay.domain.usecases.room.DeleteCurrentRoom
 import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
 import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateCurrentRoom
-import com.github.eliascoelho911.youplay.domain.usecases.session.PutCurrentRoomId
+import com.github.eliascoelho911.youplay.domain.common.session.PutCurrentRoomId
 
 class UserExitFromRoom(
     private val getLoggedUser: GetLoggedUser,

@@ -36,7 +36,7 @@ fun ComponentActivity.createRoomScreenImpl(
                     }.onSuccess {
                         navController.navigate(Destination.RoomDetails)
                     }.onFailure {
-                        showError(getString(R.string.error_create_new_room))
+                        showError(getString(R.string.error_createNewRoom))
                         createRoomButtonIsLoading = false
                     }
                 }

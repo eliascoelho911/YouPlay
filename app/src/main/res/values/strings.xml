@@ -19,7 +19,7 @@
     <string name="search">Pesquisar</string>
     <string name="label_search_music">Pesquisar música</string>
     <string name="authentication">Autenticação</string>
-    <string name="error_create_new_room">Erro ao criar uma nova sala</string>
+    <string name="error_createNewRoom">Erro ao criar uma nova sala</string>
     <string name="error_authentication_spotify_api">Erro na autenticação com o Spotify</string>
     <string name="authenticate_spotify">Autenticar com o Spotify</string>
     <string name="nickname_is_blank">Preencha o seu nickname para continuar</string>

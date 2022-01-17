@@ -3,16 +3,15 @@ package com.github.eliascoelho911.youplay.domain.usecases.room
 import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.assertIsResourceSuccess
 import com.github.eliascoelho911.youplay.common.Resource
+import com.github.eliascoelho911.youplay.domain.common.room.GetRoomById
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.repositories.RoomRepository
-import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 
 class GetRoomByIdTest: BaseTest() {

@@ -21,22 +21,26 @@ sealed class Resource<T> {
         fun <T> success(data: T) = Success(data)
         fun <T> failure(throwable: Throwable) = Failure<T>(throwable)
     }
+}
 
-    inline fun onSuccess(block: (data: T) -> Unit): Resource<T> {
-        if (this is Success)
-            block(this.data)
-        return this
-    }
+inline fun <T> Resource<T>.assertSuccess(whenSuccess: (data: T) -> Unit, message: String? = null) {
+    val predicate = this is Resource.Success
+    message?.let {
+        assert(predicate) { message }
+    } ?: assert(predicate)
+    whenSuccess((this as Resource.Success).data)
+}
 
-    inline fun onFailure(block: (throwable: Throwable) -> Unit): Resource<T> {
-        if (this is Failure)
-            block(this.throwable)
-        return this
-    }
-
-    inline fun onLoading(block: () -> Unit): Resource<T> {
-        if (this is Loading)
-            block()
-        return this
-    }
+inline fun <T> Resource<T>.on(
+    success: (data: T) -> Unit = {},
+    loading: () -> Unit = {},
+    failure: (throwable: Throwable) -> Unit = {},
+): Resource<T> {
+    if (this is Resource.Success)
+        success(this.data)
+    if (this is Resource.Failure)
+        failure(this.throwable)
+    if (this is Resource.Loading)
+        loading()
+    return this
 }
