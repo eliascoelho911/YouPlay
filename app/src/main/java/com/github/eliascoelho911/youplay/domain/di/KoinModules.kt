@@ -25,10 +25,10 @@ import com.github.eliascoelho911.youplay.domain.util.user.UserIsInSomeRoom
 import org.koin.dsl.module
 
 val useCasesModule = module {
-    single { GetLoggedUser(get(), get()) }
-    single { GetCurrentRoom(get(), get(), get()) }
-    single { ObserveCurrentRoom(get(), get(), get()) }
-    single { ObserveCurrentMusic(get(), get()) }
+    single { GetLoggedUser(get()) }
+    single { GetCurrentRoom(get(), get()) }
+    single { ObserveCurrentRoom(get(), get()) }
+    single { ObserveCurrentMusic(get()) }
     single { CreateNewRoom(get(), get(), get(), get()) }
     single { EnterTheRoom(get(), get(), get(), get(), get()) }
     single { UserExitFromRoom(get(), get(), get(), get(), get(), get()) }

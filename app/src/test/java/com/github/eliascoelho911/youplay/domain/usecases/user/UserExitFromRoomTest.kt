@@ -8,6 +8,7 @@ import com.github.eliascoelho911.youplay.domain.common.room.DeleteCurrentRoom
 import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
 import com.github.eliascoelho911.youplay.domain.common.room.UpdateCurrentRoom
 import com.github.eliascoelho911.youplay.domain.common.session.PutCurrentRoomId
+import com.github.eliascoelho911.youplay.global.Messages
 import com.github.eliascoelho911.youplay.roomMock
 import com.github.eliascoelho911.youplay.userMock
 import io.mockk.CapturingSlot
@@ -16,6 +17,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
@@ -37,6 +39,9 @@ class UserExitFromRoomTest : BaseTest() {
 
     @MockK
     private lateinit var putCurrentRoomId: PutCurrentRoomId
+
+    @RelaxedMockK
+    private lateinit var errorMessages: Messages.Error
 
     @InjectMockKs
     private lateinit var userExitFromRoom: UserExitFromRoom

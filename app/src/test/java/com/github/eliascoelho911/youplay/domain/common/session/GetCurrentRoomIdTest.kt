@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.domain.usecases.session
+package com.github.eliascoelho911.youplay.domain.common.session
 
 import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.domain.common.session.GetCurrentRoomId

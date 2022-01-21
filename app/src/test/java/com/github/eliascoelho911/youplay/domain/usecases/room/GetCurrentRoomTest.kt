@@ -1,12 +1,13 @@
 package com.github.eliascoelho911.youplay.domain.usecases.room
 
 import com.github.eliascoelho911.youplay.BaseTest
+import com.github.eliascoelho911.youplay.assertIsResourceFailure
 import com.github.eliascoelho911.youplay.assertIsResourceSuccess
+import com.github.eliascoelho911.youplay.domain.common.room.GetRoomById
+import com.github.eliascoelho911.youplay.domain.common.session.GetCurrentRoomId
+import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.global.Resource
 import com.github.eliascoelho911.youplay.global.lastResult
-import com.github.eliascoelho911.youplay.domain.common.room.GetRoomById
-import com.github.eliascoelho911.youplay.domain.entities.Room
-import com.github.eliascoelho911.youplay.domain.common.session.GetCurrentRoomId
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -27,7 +28,7 @@ class GetCurrentRoomTest : BaseTest() {
     private lateinit var getCurrentRoom: GetCurrentRoom
 
     @Test
-    fun testGetCurrentRoom() {
+    fun testDeveBuscarSalaQuandoUsuarioEstiverEmAlgumaSala() {
         val id = "id"
         val room = mockk<Room>()
         val flow = flowOf(Resource.success(room))
@@ -37,6 +38,15 @@ class GetCurrentRoomTest : BaseTest() {
 
         runBlocking {
             assertIsResourceSuccess(getCurrentRoom.get().lastResult(), room)
+        }
+    }
+
+    @Test
+    fun testDeveLancarErroQuandoUsuarioNaoEstiverEmAlgumaSala() {
+        coEvery { getCurrentRoomId.get() } returns null
+
+        runBlocking {
+            assertIsResourceFailure(getCurrentRoom.get().lastResult(), AssertionError::class.java)
         }
     }
 }

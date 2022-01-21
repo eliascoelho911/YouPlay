@@ -10,7 +10,6 @@ import com.github.eliascoelho911.youplay.domain.repositories.RoomRepository
 import com.github.eliascoelho911.youplay.domain.usecases.user.GetLoggedUser
 import com.github.eliascoelho911.youplay.domain.util.runChangingExceptionMessage
 
-//todo testar
 class CreateNewRoom(
     private val roomRepository: RoomRepository,
     private val getLoggedUser: GetLoggedUser,

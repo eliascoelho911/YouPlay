@@ -3,11 +3,11 @@ package com.github.eliascoelho911.youplay.domain.usecases.room
 import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.assertIsResourceFailure
 import com.github.eliascoelho911.youplay.assertIsResourceSuccess
+import com.github.eliascoelho911.youplay.domain.common.room.ObserveRoomById
+import com.github.eliascoelho911.youplay.domain.common.session.GetCurrentRoomId
+import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.global.Resource
 import com.github.eliascoelho911.youplay.global.lastResult
-import com.github.eliascoelho911.youplay.domain.common.room.ObserveRoomById
-import com.github.eliascoelho911.youplay.domain.entities.Room
-import com.github.eliascoelho911.youplay.domain.common.session.GetCurrentRoomId
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -42,10 +42,10 @@ class ObserveCurrentRoomTest : BaseTest() {
     @Test
     fun testDeveRetornarErroQuandoNaoEncontrarOId() {
         coEvery { getCurrentRoomId.get() } returns null
-        every { observeRoomById.observe(any()) } returns flowOf(Resource.failure(Throwable()))
 
         runBlocking {
-            assertIsResourceFailure(observeCurrentRoom.observe().lastResult(), Throwable::class.java)
+            assertIsResourceFailure(observeCurrentRoom.observe().lastResult(),
+                AssertionError::class.java)
         }
     }
 }
