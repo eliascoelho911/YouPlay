@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         package="com.github.eliascoelho911.youplay">
 
     <application
@@ -30,6 +31,12 @@
                         android:host="youplay" />
             </intent-filter>
         </activity>
+
+        <activity
+                android:name="com.journeyapps.barcodescanner.CaptureActivity"
+                android:screenOrientation="fullSensor"
+                tools:replace="android:screenOrientation"
+                android:stateNotNeeded="true" />
     </application>
 
 </manifest>

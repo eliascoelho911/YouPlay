@@ -81,4 +81,5 @@
     <string name="accessRoom_errorOnAccessTheRoom">Erro ao acessar a sala. Verifique o código e tente novamente</string>
     <string name="roomDetails_errorOnLeaveTheRoom">Erro ao sair da sala</string>
     <string name="roomDetails_repeatButtonDescription">Repetir</string>
+    <string name="scanner_prompt">Escaneie o QRCode de seu amigo</string>
 </resources>

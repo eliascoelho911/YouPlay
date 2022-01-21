@@ -18,6 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 fun MainActivity.accessRoomScreenImpl(
     navGraphBuilder: NavGraphBuilder,
     navController: NavHostController,
+    onClickAccessWithQrCode: () -> Unit,
 ) {
     navGraphBuilder.composable(Destination.AccessRoom.baseRoute, enterTransition = { _, _ ->
         slideInHorizontallyTransition()
@@ -38,7 +39,7 @@ fun MainActivity.accessRoomScreenImpl(
 
         AccessRoomScreen(roomAccessIsLoading = false,
             onBackPressed = { navController.popBackStack() },
-            onClickAccessWithQrCode = {},
+            onClickAccessWithQrCode = onClickAccessWithQrCode,
             onClickAccessWithCodeButton = { roomId ->
                 lifecycleScope.launch {
                     runCatching {
