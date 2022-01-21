@@ -23,14 +23,14 @@ fun MainActivity.accessRoomScreenImpl(
         slideInHorizontallyTransition()
     }, exitTransition = { _, target ->
         when (target.destination.route) {
-            Destination.CreateRoom.baseRoute -> slideOutHorizontallyTransition()
+            Destination.Home.baseRoute -> slideOutHorizontallyTransition()
             else -> fadeOut(animationSpec = tween(AnimationDurations.medium))
         }
     }, popEnterTransition = { _, _ ->
         slideInHorizontallyTransition()
     }, popExitTransition = { _, target ->
         when (target.destination.route) {
-            Destination.CreateRoom.baseRoute -> slideOutHorizontallyTransition()
+            Destination.Home.baseRoute -> slideOutHorizontallyTransition()
             else -> fadeOut(animationSpec = tween(AnimationDurations.medium))
         }
     }) {

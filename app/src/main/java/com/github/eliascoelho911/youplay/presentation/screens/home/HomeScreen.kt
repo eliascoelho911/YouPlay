@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.presentation.screens.createroom
+package com.github.eliascoelho911.youplay.presentation.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -50,24 +50,24 @@ import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
 @Composable
-fun CreateRoomScreen(
-    viewModel: CreateRoomViewModel,
+fun HomeScreen(
+    viewModel: HomeViewModel,
     createRoomButtonIsLoading: Boolean,
     onClickToCreateRoom: () -> Unit,
     onClickToEnterRoom: () -> Unit,
 ) {
     val user by viewModel.loggedUser.collectAsState(initial = Resource.loading())
-    Scaffold(topBar = { CreateRoomTopBar(user) },
+    Scaffold(topBar = { HomeTopBar(user) },
         modifier = Modifier
             .background(colors.background)
             .fillMaxSize()
     ) {
-        CreateRoomContent(user, createRoomButtonIsLoading, onClickToCreateRoom, onClickToEnterRoom)
+        HomeContent(user, createRoomButtonIsLoading, onClickToCreateRoom, onClickToEnterRoom)
     }
 }
 
 @Composable
-private fun CreateRoomTopBar(user: Resource<User>) {
+private fun HomeTopBar(user: Resource<User>) {
     AppTopBar(modifier = Modifier.statusBarsPadding(),
         title = { Salutation(user = user) },
         actions = {
@@ -76,7 +76,7 @@ private fun CreateRoomTopBar(user: Resource<User>) {
 }
 
 @Composable
-private fun CreateRoomContent(
+private fun HomeContent(
     user: Resource<User>,
     createRoomButtonIsLoading: Boolean,
     onClickCreateRoomButton: () -> Unit,
@@ -99,7 +99,7 @@ private fun BoxScope.Salutation(user: Resource<User>) {
         user.on(success = { user ->
             Text(text = buildAnnotatedString {
                 withStyle(typography.body1.toSpanStyle().copy(color = colors.onBackground)) {
-                    append(stringResource(id = R.string.createRoom_salutation))
+                    append(stringResource(id = R.string.home_salutation))
                 }
                 append("\n")
                 withStyle(typography.h6.toSpanStyle().copy(color = colors.onBackground)) {
@@ -185,13 +185,13 @@ private fun CreateRoomCardContent(buttonIsLoading: Boolean, onClickCreateRoomBut
         .padding(CreateRoomCardInternalMargin)
         .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = stringResource(id = R.string.createRoom_cardTitle),
+        Text(text = stringResource(id = R.string.home_cardTitle),
             style = typography.h6,
             fontWeight = FontWeight.Bold, color = colors.surface)
 
         Spacer(Modifier.height(CreateRoomCardTextMargin))
 
-        Text(text = stringResource(id = R.string.createRoom_cardMessage),
+        Text(text = stringResource(id = R.string.home_cardMessage),
             style = typography.body2, color = colors.surface.copy(alpha = ContentAlpha.medium))
 
         Spacer(Modifier.height(CreateRoomCardButtonMargin))
@@ -199,7 +199,7 @@ private fun CreateRoomCardContent(buttonIsLoading: Boolean, onClickCreateRoomBut
         ButtonWithLoading(
             loading = buttonIsLoading, onClick = onClickCreateRoomButton,
             buttonContent = {
-                Text(text = stringResource(id = R.string.createRoom_cardButton).uppercase(),
+                Text(text = stringResource(id = R.string.home_cardButton).uppercase(),
                     style = typography.button, color = colors.background)
             },
         )
@@ -223,7 +223,7 @@ private fun EnterRoomClickableMessage(
             TextButton(modifier = Modifier
                 .align(Alignment.Center),
                 onClick = onClickEnterTheRoom) {
-                Text(text = stringResource(id = R.string.createRoom_enterRoom),
+                Text(text = stringResource(id = R.string.home_enterRoom),
                     color = colors.onBackground,
                     style = typography.subtitle2)
             }
@@ -244,7 +244,7 @@ private fun BoxScope.EnterRoomClickableMessageProgressIndicator() {
 @Composable
 private fun ContentWithCreateRoomButtonIsLoading() {
     YouPlayTheme {
-        CreateRoomContent(
+        HomeContent(
             user = Resource.Success(User("Elias Costa")),
             onClickCreateRoomButton = {},
             onClickEnterTheRoom = {},
@@ -257,7 +257,7 @@ private fun ContentWithCreateRoomButtonIsLoading() {
 @Composable
 private fun ContentWithNotCreateRoomButtonIsLoading() {
     YouPlayTheme {
-        CreateRoomContent(
+        HomeContent(
             user = Resource.Success(User("Elias Costa")),
             onClickCreateRoomButton = {},
             onClickEnterTheRoom = {},
@@ -270,7 +270,7 @@ private fun ContentWithNotCreateRoomButtonIsLoading() {
 @Composable
 private fun ContentWithUserLoadingPreview() {
     YouPlayTheme {
-        CreateRoomContent(
+        HomeContent(
             user = Resource.Loading(),
             onClickCreateRoomButton = {},
             onClickEnterTheRoom = {},

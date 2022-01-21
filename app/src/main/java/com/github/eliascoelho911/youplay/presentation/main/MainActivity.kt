@@ -11,7 +11,7 @@ import com.github.eliascoelho911.youplay.R
 import com.github.eliascoelho911.youplay.domain.exceptions.DomainErrorException
 import com.github.eliascoelho911.youplay.presentation.navigation.Destination
 import com.github.eliascoelho911.youplay.presentation.screens.accessroom.accessRoomScreenImpl
-import com.github.eliascoelho911.youplay.presentation.screens.createroom.createRoomScreenImpl
+import com.github.eliascoelho911.youplay.presentation.screens.home.homeScreenImpl
 import com.github.eliascoelho911.youplay.presentation.screens.roomdetails.roomDetailsScreenImpl
 import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     startDestination = startDestination.baseRoute
                 ) {
-                    createRoomScreenImpl(navGraphBuilder = this,
+                    homeScreenImpl(navGraphBuilder = this,
                         navController)
                     roomDetailsScreenImpl(navGraphBuilder = this,
                         navController)
@@ -73,7 +73,7 @@ class MainActivity : ComponentActivity() {
     private fun startDestinationConsidering(userIsInSomeRoom: Boolean) = if (userIsInSomeRoom)
         Destination.RoomDetails
     else
-        Destination.CreateRoom
+        Destination.Home
 
     private fun requestUserAuthentication() {
         Intent(

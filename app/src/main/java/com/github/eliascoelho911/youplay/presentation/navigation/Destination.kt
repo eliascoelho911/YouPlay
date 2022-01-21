@@ -3,7 +3,7 @@ package com.github.eliascoelho911.youplay.presentation.navigation
 import androidx.navigation.NamedNavArgument
 
 sealed class Destination(private val name: String, private val arguments: List<NamedNavArgument>) {
-    object CreateRoom : Destination(name = "createRoom", arguments = emptyList())
+    object Home : Destination(name = "home", arguments = emptyList())
 
     object RoomDetails: Destination(name = "roomDetails", arguments = emptyList())
 

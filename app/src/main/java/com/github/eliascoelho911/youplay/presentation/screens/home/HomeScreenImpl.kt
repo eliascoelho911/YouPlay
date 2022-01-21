@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.presentation.screens.createroom
+package com.github.eliascoelho911.youplay.presentation.screens.home
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,15 +15,15 @@ import com.google.accompanist.navigation.animation.composable
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-fun MainActivity.createRoomScreenImpl(
+fun MainActivity.homeScreenImpl(
     navGraphBuilder: NavGraphBuilder,
     navController: NavHostController,
 ) {
-    navGraphBuilder.composable(Destination.CreateRoom.baseRoute) {
-        val viewModel: CreateRoomViewModel by viewModel()
+    navGraphBuilder.composable(Destination.Home.baseRoute) {
+        val viewModel: HomeViewModel by viewModel()
         var createRoomButtonIsLoading by remember { mutableStateOf(false) }
 
-        CreateRoomScreen(viewModel = viewModel,
+        HomeScreen(viewModel = viewModel,
             onClickToCreateRoom = {
                 createRoomButtonIsLoading = true
                 val roomId = RoomIDGenerator.generate()

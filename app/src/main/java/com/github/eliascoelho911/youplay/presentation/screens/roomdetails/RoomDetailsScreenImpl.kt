@@ -25,7 +25,7 @@ fun MainActivity.roomDetailsScreenImpl(
                     runCatching {
                         viewModel.userExitFromRoom()
                     }.onSuccess {
-                        navController.navigate(Destination.CreateRoom) {
+                        navController.navigate(Destination.Home) {
                             popUpTo(0)
                         }
                     }.onFailure {

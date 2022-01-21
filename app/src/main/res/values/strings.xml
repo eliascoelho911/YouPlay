@@ -47,11 +47,11 @@
     <string name="music_deleted_playlist">A música foi deletada da playlist</string>
     <string name="profileImage">Imagem de perfil</string>
     <string name="defaultRoomName">Festa do %s</string>
-    <string name="createRoom_salutation">Olá</string>
-    <string name="createRoom_cardTitle">Vamos começar?</string>
-    <string name="createRoom_cardMessage">Crie sua própria sala e curta com seus amigos!</string>
-    <string name="createRoom_cardButton">Criar</string>
-    <string name="createRoom_enterRoom">ou clique aqui e junte-se a festa!</string>
+    <string name="home_salutation">Olá</string>
+    <string name="home_cardTitle">Vamos começar?</string>
+    <string name="home_cardMessage">Crie sua própria sala e curta com seus amigos!</string>
+    <string name="home_cardButton">Criar</string>
+    <string name="home_enterRoom">ou clique aqui e junte-se a festa!</string>
     <string name="accessRoom_screenTitle">Acessar sala</string>
     <string name="accessRoom_labelCode">Digite o código da sala</string>
     <string name="accessRoom_withCodeButton">Entrar</string>

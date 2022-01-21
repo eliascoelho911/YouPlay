@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.presentation.screens.createroom
+package com.github.eliascoelho911.youplay.presentation.screens.home
 
 import android.content.Context
 import com.github.eliascoelho911.youplay.BaseTest
@@ -10,11 +10,10 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
 import org.junit.Test
 import java.lang.ref.WeakReference
 
-class CreateRoomViewModelTest: BaseTest() {
+class HomeViewModelTest: BaseTest() {
     @MockK
     private lateinit var createNewRoom: CreateNewRoom
 
@@ -28,7 +27,7 @@ class CreateRoomViewModelTest: BaseTest() {
     private lateinit var getLoggedUser: GetLoggedUser
 
     @InjectMockKs
-    private lateinit var viewModel: CreateRoomViewModel
+    private lateinit var viewModel: HomeViewModel
 
     @Test
     fun testEnterTheRoom() {

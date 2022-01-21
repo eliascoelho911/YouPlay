@@ -74,6 +74,7 @@ dependencies {
     def palette_version = '1.0.0'
     def koin_version = '3.1.4'
     def coil_version = "1.4.0"
+    def zxing_version = "4.1.0"
 
     implementation "androidx.core:core-ktx:$core_version"
     implementation "androidx.activity:activity-compose:$activityCompose_version"
@@ -106,6 +107,7 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
     implementation "androidx.palette:palette:$palette_version"
     implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "com.journeyapps:zxing-android-embedded:$zxing_version"
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mockk_version"

@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.presentation.screens.createroom
+package com.github.eliascoelho911.youplay.presentation.screens.home
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -11,7 +11,7 @@ import com.github.eliascoelho911.youplay.domain.usecases.user.EnterTheRoom
 import com.github.eliascoelho911.youplay.domain.usecases.user.GetLoggedUser
 import java.lang.ref.WeakReference
 
-class CreateRoomViewModel(
+class HomeViewModel(
     private val createNewRoom: CreateNewRoom,
     private val enterTheRoom: EnterTheRoom,
     private val context: WeakReference<Context>,
