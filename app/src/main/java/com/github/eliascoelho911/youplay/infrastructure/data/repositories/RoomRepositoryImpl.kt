@@ -1,10 +1,10 @@
 package com.github.eliascoelho911.youplay.infrastructure.data.repositories
 
-import com.github.eliascoelho911.youplay.common.Resource
-import com.github.eliascoelho911.youplay.common.callbackFlowResource
-import com.github.eliascoelho911.youplay.common.emitErrors
-import com.github.eliascoelho911.youplay.common.flowResource
-import com.github.eliascoelho911.youplay.common.serializeToMap
+import com.github.eliascoelho911.youplay.global.Resource
+import com.github.eliascoelho911.youplay.global.callbackFlowResource
+import com.github.eliascoelho911.youplay.global.catchExceptions
+import com.github.eliascoelho911.youplay.global.flowResource
+import com.github.eliascoelho911.youplay.global.serializeToMap
 import com.github.eliascoelho911.youplay.domain.entities.ID
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.repositories.RoomRepository
@@ -14,7 +14,6 @@ import com.github.eliascoelho911.youplay.infrastructure.data.mappers.toEntity
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.tasks.await
 
 private const val CollectionName = "room"
@@ -35,13 +34,13 @@ class RoomRepositoryImpl(
         }.let { subscription ->
             awaitClose { subscription.remove() }
         }
-    }.emitErrors()
+    }.catchExceptions()
 
     override fun getRoomById(id: ID) = flowResource<Room> {
         val document = collection.document(id).get().await()
         val entity = document.toObject(RoomDocument::class.java)!!.toEntity(id)
         emit(Resource.success(entity))
-    }.emitErrors()
+    }.catchExceptions()
 
     override suspend fun add(room: Room) {
         collection.document(room.id).set(room.toDocument()).await()

@@ -1,6 +1,6 @@
 package com.github.eliascoelho911.youplay.domain.repositories
 
-import com.github.eliascoelho911.youplay.common.Resource
+import com.github.eliascoelho911.youplay.global.Resource
 import com.github.eliascoelho911.youplay.domain.entities.ID
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import kotlinx.coroutines.flow.Flow

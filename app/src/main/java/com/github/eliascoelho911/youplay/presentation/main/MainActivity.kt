@@ -7,6 +7,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.lifecycleScope
+import com.github.eliascoelho911.youplay.R
+import com.github.eliascoelho911.youplay.domain.exceptions.DomainErrorException
 import com.github.eliascoelho911.youplay.presentation.navigation.Destination
 import com.github.eliascoelho911.youplay.presentation.screens.accessroom.accessRoomScreenImpl
 import com.github.eliascoelho911.youplay.presentation.screens.createroom.createRoomScreenImpl
@@ -28,6 +30,16 @@ class MainActivity : ComponentActivity() {
         ensureUserAuthentication()
     }
 
+    fun showError(throwable: Throwable) {
+        //TODO Mostrar o erro de uma forma mais bonita
+        val message = if (throwable is DomainErrorException && throwable.message != null) {
+            throwable.message
+        } else {
+            getString(R.string.error_default)
+        }
+        Toast.makeText(this, message ?: message, Toast.LENGTH_SHORT).show()
+    }
+
     private fun ensureUserAuthentication() {
         lifecycleScope.launch {
             if (!viewModel.userIsAuthenticatedOnSpotify()) {
@@ -47,14 +59,11 @@ class MainActivity : ComponentActivity() {
                     startDestination = startDestination.baseRoute
                 ) {
                     createRoomScreenImpl(navGraphBuilder = this,
-                        navController,
-                        showError = { showError(it) })
+                        navController)
                     roomDetailsScreenImpl(navGraphBuilder = this,
-                        navController,
-                        showError = { showError(it) })
+                        navController)
                     accessRoomScreenImpl(navGraphBuilder = this,
-                        navController,
-                        showError = { showError(it) })
+                        navController)
                 }
             }
         }
@@ -65,11 +74,6 @@ class MainActivity : ComponentActivity() {
         Destination.RoomDetails
     else
         Destination.CreateRoom
-
-    private fun showError(message: String) {
-        //TODO Mostrar o erro de uma forma mais bonita
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
 
     private fun requestUserAuthentication() {
         Intent(

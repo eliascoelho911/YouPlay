@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.common
+package com.github.eliascoelho911.youplay.global
 
 sealed class Resource<T> {
     class Loading<T> : Resource<T>() {
@@ -23,11 +23,15 @@ sealed class Resource<T> {
     }
 }
 
-inline fun <T> Resource<T>.assertSuccess(whenSuccess: (data: T) -> Unit, message: String? = null) {
+inline fun <T> Resource<T>.assertSuccess(message: String? = null, whenSuccess: (data: T) -> Unit) {
     val predicate = this is Resource.Success
-    message?.let {
-        assert(predicate) { message }
-    } ?: assert(predicate)
+    if (!predicate) {
+        throw if (this is Resource.Failure) {
+            AssertionError(message, throwable)
+        } else {
+            AssertionError(message)
+        }
+    }
     whenSuccess((this as Resource.Success).data)
 }
 
@@ -42,5 +46,16 @@ inline fun <T> Resource<T>.on(
         failure(this.throwable)
     if (this is Resource.Loading)
         loading()
+    return this
+}
+
+inline fun <T> Resource<T>.on(
+    success: (data: T) -> Unit = {},
+    loadingOrFailure: (Resource<T>) -> Unit = {},
+): Resource<T> {
+    if (this is Resource.Success)
+        success(this.data)
+    if ((this is Resource.Loading) or (this is Resource.Failure))
+        loadingOrFailure(this)
     return this
 }

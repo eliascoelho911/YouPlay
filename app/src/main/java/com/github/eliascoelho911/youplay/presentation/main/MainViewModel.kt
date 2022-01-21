@@ -3,8 +3,8 @@ package com.github.eliascoelho911.youplay.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.eliascoelho911.youplay.domain.usecases.spotify.AuthenticateUserOnSpotify
-import com.github.eliascoelho911.youplay.domain.common.spotify.UserIsAuthenticatedOnSpotify
-import com.github.eliascoelho911.youplay.domain.common.user.UserIsInSomeRoom
+import com.github.eliascoelho911.youplay.domain.util.spotify.UserIsAuthenticatedOnSpotify
+import com.github.eliascoelho911.youplay.domain.util.user.UserIsInSomeRoom
 import kotlinx.coroutines.launch
 
 class MainViewModel(

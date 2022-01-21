@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.domain.common.spotify
+package com.github.eliascoelho911.youplay.domain.util.spotify
 
 import com.github.eliascoelho911.youplay.domain.common.session.GetAuthSessionId
 

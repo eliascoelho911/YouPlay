@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.domain.common.user
+package com.github.eliascoelho911.youplay.domain.util.user
 
 import com.github.eliascoelho911.youplay.domain.common.session.GetCurrentRoomId
 

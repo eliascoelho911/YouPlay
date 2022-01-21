@@ -1,16 +1,16 @@
-package com.github.eliascoelho911.youplay.domain.usecases.room
+package com.github.eliascoelho911.youplay.domain.common.room
 
-import com.github.eliascoelho911.youplay.common.assertSuccess
-import com.github.eliascoelho911.youplay.common.lastResult
+import com.github.eliascoelho911.youplay.global.assertSuccess
+import com.github.eliascoelho911.youplay.global.lastResult
+import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
 
-//todo isso não é uma usecase, mas sim um common
 class DeleteCurrentRoom(
     private val getCurrentRoom: GetCurrentRoom,
     private val deleteRoomById: DeleteRoomById
 ) {
     suspend fun delete() {
-        getCurrentRoom.get().lastResult().assertSuccess(whenSuccess = { currentRoom ->
+        getCurrentRoom.get().lastResult().assertSuccess { currentRoom ->
             deleteRoomById.delete(currentRoom.id)
-        }, message = errorMessages.createNewRoom)
+        }
     }
 }

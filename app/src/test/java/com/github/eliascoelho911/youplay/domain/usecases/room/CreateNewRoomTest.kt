@@ -1,13 +1,12 @@
 package com.github.eliascoelho911.youplay.domain.usecases.room
 
 import com.github.eliascoelho911.youplay.BaseTest
-import com.github.eliascoelho911.youplay.common.Resource
+import com.github.eliascoelho911.youplay.global.Resource
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.entities.User
 import com.github.eliascoelho911.youplay.domain.repositories.RoomRepository
 import com.github.eliascoelho911.youplay.domain.usecases.user.GetLoggedUser
 import io.mockk.CapturingSlot
-import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -17,7 +16,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 
 class CreateNewRoomTest: BaseTest() {

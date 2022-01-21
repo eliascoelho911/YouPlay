@@ -50,16 +50,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import coil.compose.rememberImagePainter
 import com.github.eliascoelho911.youplay.R
-import com.github.eliascoelho911.youplay.common.Resource
+import com.github.eliascoelho911.youplay.global.Resource
+import com.github.eliascoelho911.youplay.global.on
 import com.github.eliascoelho911.youplay.domain.entities.Album
 import com.github.eliascoelho911.youplay.domain.entities.Artist
 import com.github.eliascoelho911.youplay.domain.entities.Music
 import com.github.eliascoelho911.youplay.domain.entities.PlayerData
 import com.github.eliascoelho911.youplay.domain.entities.Room
-import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
 import com.github.eliascoelho911.youplay.presentation.common.AnimationDurations.medium
 import com.github.eliascoelho911.youplay.presentation.common.AppTopBarWithCentralizedTitle
 import com.github.eliascoelho911.youplay.presentation.common.screenPadding
+import com.github.eliascoelho911.youplay.presentation.theme.YouPlayTheme
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
@@ -84,7 +85,7 @@ fun RoomDetailsScreen(
 
     Box(Modifier.fillMaxSize()) {
         Background(color = backgroundColor)
-        roomResource.onSuccess { room ->
+        roomResource.on(success = { room ->
             Scaffold(topBar = {
                 RoomDetailsTopBar(
                     roomName = room.name,
@@ -105,21 +106,22 @@ fun RoomDetailsScreen(
                     onClickRepeatButton = onClickRepeatButton
                 )
             }
-        }
-
-        if (showExitFromRoomDialog)
-            ExitFromRoomDialog(onConfirmExitFromRoom = {
-                showExitFromRoomDialog = false
-                showLoadingAction = true
-                onConfirmExitFromRoom()
-            }, onDismissExitRoom = {
-                showExitFromRoomDialog = false
-            })
-
-        if (showLoadingAction)
-            LoadingAction()
+        })
     }
+
+    if (showExitFromRoomDialog)
+        ExitFromRoomDialog(onConfirmExitFromRoom = {
+            showExitFromRoomDialog = false
+            showLoadingAction = true
+            onConfirmExitFromRoom()
+        }, onDismissExitRoom = {
+            showExitFromRoomDialog = false
+        })
+
+    if (showLoadingAction)
+        LoadingAction()
 }
+
 
 @Composable
 private fun LoadingAction() {
@@ -157,7 +159,7 @@ private fun RoomDetailsContent(
         .navigationBarsPadding()
         .fillMaxSize()) {
         //TODO demais casos
-        currentMusicResource.onSuccess { currentMusic ->
+        currentMusicResource.on(success = { currentMusic ->
             currentMusic.album.imageUrl?.let { url ->
                 AlbumImage(modifier = Modifier.screenPadding(vertical = false),
                     imageUrl = url)
@@ -172,7 +174,7 @@ private fun RoomDetailsContent(
                 onClickSkipToNextMusicButton = onClickSkipToNextMusicButton,
                 onClickRepeatButton = onClickRepeatButton
             )
-        }
+        })
     }
 }
 

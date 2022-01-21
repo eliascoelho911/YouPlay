@@ -2,8 +2,8 @@ package com.github.eliascoelho911.youplay.presentation.main
 
 import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.domain.usecases.spotify.AuthenticateUserOnSpotify
-import com.github.eliascoelho911.youplay.domain.common.spotify.UserIsAuthenticatedOnSpotify
-import com.github.eliascoelho911.youplay.domain.common.user.UserIsInSomeRoom
+import com.github.eliascoelho911.youplay.domain.util.spotify.UserIsAuthenticatedOnSpotify
+import com.github.eliascoelho911.youplay.domain.util.user.UserIsInSomeRoom
 import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK

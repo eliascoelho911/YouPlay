@@ -1,7 +1,8 @@
 package com.github.eliascoelho911.youplay.infrastructure.data.repositories
 
-import com.github.eliascoelho911.youplay.common.emitSuccess
-import com.github.eliascoelho911.youplay.common.flowResource
+import com.github.eliascoelho911.youplay.global.catchExceptions
+import com.github.eliascoelho911.youplay.global.emitSuccess
+import com.github.eliascoelho911.youplay.global.flowResource
 import com.github.eliascoelho911.youplay.domain.entities.User
 import com.github.eliascoelho911.youplay.domain.repositories.UserRepository
 import com.github.eliascoelho911.youplay.infrastructure.data.caches.UserLoggedInSpotifyCache
@@ -29,5 +30,5 @@ class UserRepositoryImpl(
         } else {
             false
         }
-    }
+    }.catchExceptions()
 }

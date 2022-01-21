@@ -20,7 +20,7 @@
     <string name="label_search_music">Pesquisar música</string>
     <string name="authentication">Autenticação</string>
     <string name="error_createNewRoom">Erro ao criar uma nova sala</string>
-    <string name="error_authentication_spotify_api">Erro na autenticação com o Spotify</string>
+    <string name="error_authenticateUserOnSpotify">Erro na autenticação com o Spotify</string>
     <string name="authenticate_spotify">Autenticar com o Spotify</string>
     <string name="nickname_is_blank">Preencha o seu nickname para continuar</string>
     <string name="label_nickname">Digite seu nickname</string>
@@ -30,7 +30,7 @@
     <string name="error_validate_nickname">Erro ao validar o nickname inserido</string>
     <string name="notification_user_created">Seu usuário foi criado com sucesso!</string>
     <string name="fetch_room_error">Erro ao tentar encontrar essa sala</string>
-    <string name="error_exit_room">Erro ao tentar sair da sala</string>
+    <string name="error_userExitFromRoom">Erro ao tentar sair da sala</string>
     <string name="error_default">Ocorreu um erro</string>
     <string name="error_fetch_user">Erro ao buscar usuário</string>
     <string name="error_user_not_found">Usuário não encontrado</string>
@@ -39,7 +39,8 @@
     <string name="error_update_room_name">Erro ao tentar alterar o nome da sala</string>
     <string name="error_delete_music_playlist">Erro ao tentar deletar uma música da playlist</string>
     <string name="error_add_music_playlist">Erro ao tentar adicionar uma música na playlist</string>
-    <string name="error_enter_the_room">Erro ao tentar entrar na sala</string>
+    <string name="error_enterTheRoom">Erro ao tentar entrar na sala</string>
+    <string name="error_roomNotFound">Sala não encontrada</string>
     <string name="exit_room">Sair da sala</string>
     <string name="error_delete_user">Erro ao deletar usuário</string>
     <string name="error_delete_room">Erro ao tentar apagar sua sala</string>

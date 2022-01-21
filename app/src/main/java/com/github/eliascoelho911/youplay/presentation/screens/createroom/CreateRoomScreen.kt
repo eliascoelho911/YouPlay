@@ -36,7 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.github.eliascoelho911.youplay.R
-import com.github.eliascoelho911.youplay.common.Resource
+import com.github.eliascoelho911.youplay.global.Resource
+import com.github.eliascoelho911.youplay.global.on
 import com.github.eliascoelho911.youplay.domain.entities.User
 import com.github.eliascoelho911.youplay.presentation.common.AppTopBar
 import com.github.eliascoelho911.youplay.presentation.common.ButtonWithLoading
@@ -95,7 +96,7 @@ private fun BoxScope.Salutation(user: Resource<User>) {
     Box(Modifier
         .screenPadding(start = true)
         .align(Alignment.CenterStart)) {
-        user.onSuccess { user ->
+        user.on(success = { user ->
             Text(text = buildAnnotatedString {
                 withStyle(typography.body1.toSpanStyle().copy(color = colors.onBackground)) {
                     append(stringResource(id = R.string.createRoom_salutation))
@@ -105,11 +106,8 @@ private fun BoxScope.Salutation(user: Resource<User>) {
                     append(user.fullName)
                 }
             })
-        }.onLoading {
-            SalutationProgressIndicator()
-        }.onFailure {
-            SalutationProgressIndicator()
-        }
+        }, loading = { SalutationProgressIndicator() },
+            failure = { SalutationProgressIndicator() })
     }
 }
 
@@ -125,7 +123,7 @@ private fun SalutationProgressIndicator() {
 @Composable
 private fun ProfileImage(user: Resource<User>) {
     Box(Modifier.screenPadding(end = true)) {
-        user.onSuccess { user ->
+        user.on(success = { user ->
             if (user.imageUrl != null) {
                 Surface(modifier = Modifier
                     .size(ProfileImageSize),
@@ -150,11 +148,9 @@ private fun ProfileImage(user: Resource<User>) {
                         color = colors.onPrimary)
                 }
             }
-        }.onLoading {
+        }, loadingOrFailure = {
             ProfileImageProgressIndicator()
-        }.onFailure {
-            ProfileImageProgressIndicator()
-        }
+        })
     }
 }
 
@@ -171,7 +167,7 @@ private fun CreateRoomCard(
     createRoomButtonIsLoading: Boolean,
     onClickCreateRoomButton: () -> Unit,
 ) {
-    user.onSuccess {
+    user.on(success = {
         Box(modifier = Modifier
             .fillMaxWidth()
             .background(linearGradient(
@@ -180,11 +176,7 @@ private fun CreateRoomCard(
             ), shapes.medium)) {
             CreateRoomCardContent(createRoomButtonIsLoading, onClickCreateRoomButton)
         }
-    }.onLoading {
-        CreateRoomProgressIndicator()
-    }.onFailure {
-        CreateRoomProgressIndicator()
-    }
+    }, loadingOrFailure = { CreateRoomProgressIndicator() })
 }
 
 @Composable
@@ -227,7 +219,7 @@ private fun EnterRoomClickableMessage(
     user: Resource<User>,
 ) {
     Box(Modifier.fillMaxWidth()) {
-        user.onSuccess {
+        user.on(success = {
             TextButton(modifier = Modifier
                 .align(Alignment.Center),
                 onClick = onClickEnterTheRoom) {
@@ -235,11 +227,7 @@ private fun EnterRoomClickableMessage(
                     color = colors.onBackground,
                     style = typography.subtitle2)
             }
-        }.onLoading {
-            EnterRoomClickableMessageProgressIndicator()
-        }.onFailure {
-            EnterRoomClickableMessageProgressIndicator()
-        }
+        }, loadingOrFailure = { EnterRoomClickableMessageProgressIndicator() })
     }
 }
 

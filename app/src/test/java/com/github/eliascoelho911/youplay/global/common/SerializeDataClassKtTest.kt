@@ -1,6 +1,7 @@
-package com.github.eliascoelho911.youplay.common
+package com.github.eliascoelho911.youplay.global.common
 
 import com.github.eliascoelho911.youplay.BaseTest
+import com.github.eliascoelho911.youplay.global.serializeToMap
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

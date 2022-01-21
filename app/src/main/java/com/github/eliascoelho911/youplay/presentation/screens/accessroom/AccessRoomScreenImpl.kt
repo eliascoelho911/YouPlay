@@ -1,25 +1,23 @@
 package com.github.eliascoelho911.youplay.presentation.screens.accessroom
 
-import androidx.activity.ComponentActivity
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import com.github.eliascoelho911.youplay.R
+import com.github.eliascoelho911.youplay.presentation.common.AnimationDurations
+import com.github.eliascoelho911.youplay.presentation.common.navigate
+import com.github.eliascoelho911.youplay.presentation.main.MainActivity
 import com.github.eliascoelho911.youplay.presentation.main.slideInHorizontallyTransition
 import com.github.eliascoelho911.youplay.presentation.main.slideOutHorizontallyTransition
 import com.github.eliascoelho911.youplay.presentation.navigation.Destination
-import com.github.eliascoelho911.youplay.presentation.common.AnimationDurations
-import com.github.eliascoelho911.youplay.presentation.common.navigate
 import com.google.accompanist.navigation.animation.composable
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-fun ComponentActivity.accessRoomScreenImpl(
+fun MainActivity.accessRoomScreenImpl(
     navGraphBuilder: NavGraphBuilder,
     navController: NavHostController,
-    showError: (error: String) -> Unit,
 ) {
     navGraphBuilder.composable(Destination.AccessRoom.baseRoute, enterTransition = { _, _ ->
         slideInHorizontallyTransition()
@@ -48,7 +46,7 @@ fun ComponentActivity.accessRoomScreenImpl(
                     }.onSuccess {
                         navController.navigate(Destination.RoomDetails)
                     }.onFailure {
-                        showError(getString(R.string.accessRoom_errorOnAccessTheRoom))
+                        showError(it)
                     }
                 }
             })

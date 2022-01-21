@@ -1,11 +1,14 @@
 package com.github.eliascoelho911.youplay.domain.usecases.user
 
-import com.github.eliascoelho911.youplay.common.lastResult
-import com.github.eliascoelho911.youplay.domain.entities.copyRemovingUsers
-import com.github.eliascoelho911.youplay.domain.usecases.room.DeleteCurrentRoom
-import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
-import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateCurrentRoom
+import com.github.eliascoelho911.youplay.global.Messages
+import com.github.eliascoelho911.youplay.global.assertSuccess
+import com.github.eliascoelho911.youplay.global.lastResult
+import com.github.eliascoelho911.youplay.domain.util.runChangingExceptionMessage
 import com.github.eliascoelho911.youplay.domain.common.session.PutCurrentRoomId
+import com.github.eliascoelho911.youplay.domain.entities.copyRemovingUsers
+import com.github.eliascoelho911.youplay.domain.common.room.DeleteCurrentRoom
+import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
+import com.github.eliascoelho911.youplay.domain.common.room.UpdateCurrentRoom
 
 class UserExitFromRoom(
     private val getLoggedUser: GetLoggedUser,
@@ -13,10 +16,11 @@ class UserExitFromRoom(
     private val getCurrentRoom: GetCurrentRoom,
     private val deleteCurrentRoom: DeleteCurrentRoom,
     private val updateCurrentRoom: UpdateCurrentRoom,
+    private val errorMessages: Messages.Error,
 ) {
-    suspend fun exit() {
-        getCurrentRoom.get().lastResult().onSuccess { currentRoom ->
-            getLoggedUser.get().lastResult().onSuccess { loggedUser ->
+    suspend fun exit() = runChangingExceptionMessage(errorMessages.userExitFromRoom) {
+        getCurrentRoom.get().lastResult().assertSuccess { currentRoom ->
+            getLoggedUser.get().lastResult().assertSuccess { loggedUser ->
                 if (currentRoom.ownerId == loggedUser.id) {
                     deleteCurrentRoom.delete()
                 } else {
@@ -25,11 +29,7 @@ class UserExitFromRoom(
                     }
                 }
                 putCurrentRoomId.put(null)
-            }.onFailure {
-                throw it
             }
-        }.onFailure {
-            throw it
         }
     }
 }

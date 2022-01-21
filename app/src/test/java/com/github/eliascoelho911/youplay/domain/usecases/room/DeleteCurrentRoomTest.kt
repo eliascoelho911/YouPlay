@@ -1,7 +1,9 @@
 package com.github.eliascoelho911.youplay.domain.usecases.room
 
 import com.github.eliascoelho911.youplay.BaseTest
-import com.github.eliascoelho911.youplay.common.Resource
+import com.github.eliascoelho911.youplay.global.Resource
+import com.github.eliascoelho911.youplay.domain.common.room.DeleteCurrentRoom
+import com.github.eliascoelho911.youplay.domain.common.room.DeleteRoomById
 import com.github.eliascoelho911.youplay.roomMock
 import io.mockk.coEvery
 import io.mockk.coVerify

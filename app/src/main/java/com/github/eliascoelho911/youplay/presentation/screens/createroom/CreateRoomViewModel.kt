@@ -3,7 +3,8 @@ package com.github.eliascoelho911.youplay.presentation.screens.createroom
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.github.eliascoelho911.youplay.R
-import com.github.eliascoelho911.youplay.common.lastResult
+import com.github.eliascoelho911.youplay.global.assertSuccess
+import com.github.eliascoelho911.youplay.global.lastResult
 import com.github.eliascoelho911.youplay.domain.entities.ID
 import com.github.eliascoelho911.youplay.domain.usecases.room.CreateNewRoom
 import com.github.eliascoelho911.youplay.domain.usecases.user.EnterTheRoom
@@ -19,13 +20,11 @@ class CreateRoomViewModel(
     val loggedUser by lazy { getLoggedUser.get() }
 
     suspend fun createNewRoom(roomId: ID) {
-        loggedUser.lastResult().onSuccess { loggedUser ->
+        loggedUser.lastResult().assertSuccess { loggedUser ->
             val roomName = context.get()?.getString(
                 R.string.defaultRoomName, loggedUser.firstName
             ).orEmpty()
             createNewRoom.create(roomId, roomName)
-        }.onFailure {
-            throw it
         }
     }
 

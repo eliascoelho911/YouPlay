@@ -1,6 +1,6 @@
 package com.github.eliascoelho911.youplay
 
-import com.github.eliascoelho911.youplay.common.Resource
+import com.github.eliascoelho911.youplay.global.Resource
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.instanceOf
 import org.junit.Assert.assertEquals

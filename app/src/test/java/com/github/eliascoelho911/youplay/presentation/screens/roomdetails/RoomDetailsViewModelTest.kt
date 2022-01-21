@@ -4,7 +4,7 @@ import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.usecases.room.ObserveCurrentMusic
 import com.github.eliascoelho911.youplay.domain.usecases.room.ObserveCurrentRoom
-import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateCurrentRoom
+import com.github.eliascoelho911.youplay.domain.common.room.UpdateCurrentRoom
 import com.github.eliascoelho911.youplay.domain.usecases.user.UserExitFromRoom
 import com.github.eliascoelho911.youplay.roomMock
 import io.mockk.CapturingSlot

@@ -1,11 +1,11 @@
 package com.github.eliascoelho911.youplay.domain.usecases.user
 
 import com.github.eliascoelho911.youplay.BaseTest
-import com.github.eliascoelho911.youplay.common.Resource
+import com.github.eliascoelho911.youplay.global.Resource
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.entities.User
 import com.github.eliascoelho911.youplay.domain.entities.copyAddingUsers
-import com.github.eliascoelho911.youplay.domain.usecases.room.UpdateCurrentRoom
+import com.github.eliascoelho911.youplay.domain.common.room.UpdateCurrentRoom
 import com.github.eliascoelho911.youplay.domain.common.session.PutCurrentRoomId
 import com.github.eliascoelho911.youplay.roomMock
 import com.github.eliascoelho911.youplay.userMock

@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.common
+package com.github.eliascoelho911.youplay.global
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

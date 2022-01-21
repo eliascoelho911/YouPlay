@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.common
+package com.github.eliascoelho911.youplay.global
 
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
@@ -35,17 +35,7 @@ suspend fun <T> Flow<Resource<T>>.lastResult(): Resource<T> {
     return result!!
 }
 
-suspend fun <T> FlowCollector<Resource<T>>.emitIfLoadingOrFailure(
-    resource: Resource<*>,
-) {
-    resource.onLoading {
-        emit(Resource.loading())
-    }.onFailure { throwable ->
-        emit(Resource.failure(throwable))
-    }
-}
-
-fun <T> Flow<Resource<T>>.emitErrors() =
+fun <T> Flow<Resource<T>>.catchExceptions() =
     catch { throwable ->
         emit(Resource.failure(throwable))
     }
@@ -54,4 +44,12 @@ suspend fun <T> FlowCollector<Resource<T>>.emitSuccess(
     value: T,
 ) {
     emit(Resource.success(value))
+}
+
+suspend fun <T> FlowCollector<Resource<T>>.emitLoading() {
+    emit(Resource.loading())
+}
+
+suspend fun <T> FlowCollector<Resource<T>>.emitFailure(throwable: Throwable) {
+    emit(Resource.failure(throwable))
 }
