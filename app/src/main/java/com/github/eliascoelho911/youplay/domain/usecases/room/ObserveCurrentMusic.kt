@@ -1,13 +1,13 @@
 package com.github.eliascoelho911.youplay.domain.usecases.room
 
 import com.github.eliascoelho911.youplay.domain.entities.Music
-import com.github.eliascoelho911.youplay.global.catchExceptions
-import com.github.eliascoelho911.youplay.global.collectResource
-import com.github.eliascoelho911.youplay.global.emitFailure
-import com.github.eliascoelho911.youplay.global.emitLoading
-import com.github.eliascoelho911.youplay.global.emitSuccess
-import com.github.eliascoelho911.youplay.global.flowResource
-import com.github.eliascoelho911.youplay.global.on
+import com.github.eliascoelho911.youplay.util.catchExceptions
+import com.github.eliascoelho911.youplay.util.collectResource
+import com.github.eliascoelho911.youplay.util.emitFailure
+import com.github.eliascoelho911.youplay.util.emitLoading
+import com.github.eliascoelho911.youplay.util.emitSuccess
+import com.github.eliascoelho911.youplay.util.flowResource
+import com.github.eliascoelho911.youplay.util.on
 
 class ObserveCurrentMusic(
     private val observeCurrentRoom: ObserveCurrentRoom,

@@ -1,14 +1,14 @@
 package com.github.eliascoelho911.youplay.domain.usecases.user
 
 import com.github.eliascoelho911.youplay.BaseTest
-import com.github.eliascoelho911.youplay.global.Resource
+import com.github.eliascoelho911.youplay.util.Resource
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.entities.copyRemovingUsers
 import com.github.eliascoelho911.youplay.domain.common.room.DeleteCurrentRoom
 import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
 import com.github.eliascoelho911.youplay.domain.common.room.UpdateCurrentRoom
 import com.github.eliascoelho911.youplay.domain.common.session.PutCurrentRoomId
-import com.github.eliascoelho911.youplay.global.Messages
+import com.github.eliascoelho911.youplay.util.Messages
 import com.github.eliascoelho911.youplay.roomMock
 import com.github.eliascoelho911.youplay.userMock
 import io.mockk.CapturingSlot

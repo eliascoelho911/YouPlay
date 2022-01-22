@@ -3,7 +3,7 @@ package com.github.eliascoelho911.youplay.domain.usecases.spotify
 import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.domain.common.session.PutAuthSessionId
 import com.github.eliascoelho911.youplay.domain.common.spotify.AddSpotifyRefreshToken
-import com.github.eliascoelho911.youplay.global.Messages
+import com.github.eliascoelho911.youplay.util.Messages
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.InjectMockKs

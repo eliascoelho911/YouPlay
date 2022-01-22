@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.presentation.ui.screens.roomdetails
+package com.github.eliascoelho911.youplay.presentation.ui.base.screens
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -27,8 +27,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,78 +50,148 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import coil.compose.rememberImagePainter
 import com.github.eliascoelho911.youplay.R
-import com.github.eliascoelho911.youplay.global.Resource
-import com.github.eliascoelho911.youplay.global.on
-import com.github.eliascoelho911.youplay.domain.entities.Album
-import com.github.eliascoelho911.youplay.domain.entities.Artist
 import com.github.eliascoelho911.youplay.domain.entities.Music
-import com.github.eliascoelho911.youplay.domain.entities.PlayerData
 import com.github.eliascoelho911.youplay.domain.entities.Room
+import com.github.eliascoelho911.youplay.util.Resource
+import com.github.eliascoelho911.youplay.util.callIf
+import com.github.eliascoelho911.youplay.util.on
 import com.github.eliascoelho911.youplay.presentation.common.AnimationDurations.medium
-import com.github.eliascoelho911.youplay.presentation.common.AppTopBarWithCentralizedTitle
-import com.github.eliascoelho911.youplay.presentation.common.screenPadding
+import com.github.eliascoelho911.youplay.presentation.ui.base.components.AppTopBarWithCentralizedTitle
+import com.github.eliascoelho911.youplay.presentation.ui.base.components.screenPadding
+import com.github.eliascoelho911.youplay.presentation.ui.screens.roomdetails.Player
+import com.github.eliascoelho911.youplay.presentation.ui.state.screen.roomdetails.RoomDetailsData
+import com.github.eliascoelho911.youplay.presentation.ui.state.screen.roomdetails.RoomDetailsState
 import com.github.eliascoelho911.youplay.presentation.ui.theme.YouPlayTheme
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
 @Composable
 fun RoomDetailsScreen(
-    viewModel: RoomDetailsViewModel,
+    state: RoomDetailsState,
+    data: RoomDetailsData,
     backgroundColor: Color,
-    onConfirmExitFromRoom: () -> Unit,
-    onClickOptions: () -> Unit,
     onUpdateRoomName: (String) -> Unit,
-    onClickSkipToPreviousMusicButton: () -> Unit,
-    onClickSkipToNextMusicButton: () -> Unit,
-    onClickPlayOrPauseButton: () -> Unit,
-    onClickShuffleButton: () -> Unit,
-    onClickRepeatButton: () -> Unit,
+    onClickOptions: () -> Unit,
+    onClickExitFromRoom: () -> Unit,
+    onConfirmExitFromRoom: () -> Unit,
+    onDismissExitFromRoom: () -> Unit,
     onTimeChange: (Int) -> Unit,
+    onClickShuffleButton: () -> Unit,
+    onClickSkipToPreviousMusicButton: () -> Unit,
+    onClickPlayOrPauseButton: () -> Unit,
+    onClickSkipToNextMusicButton: () -> Unit,
+    onClickRepeatButton: () -> Unit,
 ) {
-    val roomResource by viewModel.currentRoom.collectAsState(initial = Resource.loading())
-    val currentMusicResource by viewModel.currentMusic.collectAsState(initial = Resource.loading())
-    var showExitFromRoomDialog by remember { mutableStateOf(false) }
-    var showLoadingAction by remember { mutableStateOf(false) }
+    val currentRoomResource by data.currentRoomResource.observeAsState(initial = Resource.loading())
+    val currentMusicResource by data.currentMusicResource.observeAsState(initial = Resource.loading())
+    val optionsIsVisible by remember { state.optionsIsVisible }
+    val exitFromRoomDialogIsVisible by remember { state.exitFromRoomDialogIsVisible }
+    val loadingActionIsVisible by remember { state.loadingActionIsVisible }
 
     Box(Modifier.fillMaxSize()) {
         Background(color = backgroundColor)
-        roomResource.on(success = { room ->
-            Scaffold(topBar = {
-                RoomDetailsTopBar(
-                    roomName = room.name,
-                    onUpdateTitle = onUpdateRoomName,
-                    onClickExitFromRoom = {
-                        showExitFromRoomDialog = true
-                    },
-                    onClickOptions = onClickOptions)
-            }) {
-                RoomDetailsContent(
-                    room = room,
-                    currentMusicResource = currentMusicResource,
-                    onClickSkipToPreviousMusicButton = onClickSkipToPreviousMusicButton,
-                    onClickSkipToNextMusicButton = onClickSkipToNextMusicButton,
-                    onClickPlayOrPauseButton = onClickPlayOrPauseButton,
-                    onTimeChange = onTimeChange,
-                    onClickShuffleButton = onClickShuffleButton,
-                    onClickRepeatButton = onClickRepeatButton
-                )
+
+        RoomDetailsContent(
+            currentRoomResource,
+            currentMusicResource,
+            onClickSkipToPreviousMusicButton,
+            onClickSkipToNextMusicButton,
+            onClickPlayOrPauseButton,
+            onTimeChange,
+            onClickShuffleButton,
+            onClickRepeatButton,
+            onUpdateRoomName,
+            onClickExitFromRoom,
+            onClickOptions
+        )
+
+        callIf(optionsIsVisible) { Options() }
+    }
+
+    callIf(exitFromRoomDialogIsVisible) {
+        ExitFromRoomDialog(onConfirmExitFromRoom = {
+            onConfirmExitFromRoom()
+        }, onDismissExitRoom = onDismissExitFromRoom)
+    }
+
+    callIf(loadingActionIsVisible) { LoadingAction() }
+}
+
+
+@Composable
+private fun TopBar(
+    room: Room,
+    onUpdateRoomName: (String) -> Unit,
+    onClickExitFromRoom: () -> Unit,
+    onClickOptions: () -> Unit,
+) {
+    var title by remember { mutableStateOf(room.name) }
+    title = room.name
+    AppTopBarWithCentralizedTitle(modifier = Modifier.statusBarsPadding(),
+        iconBack = Icons.Rounded.Close,
+        title = {
+            RoomTitle(title = title, onValueChange = { newTitle ->
+                title = newTitle
+            }, onUpdateTitle = onUpdateRoomName)
+        },
+        onBackPressed = onClickExitFromRoom,
+        actions = {
+            OptionsButton(onClickOptions)
+        })
+}
+
+@Composable
+private fun RoomDetailsContent(
+    currentRoomResource: Resource<Room>,
+    currentMusicResource: Resource<Music>,
+    onClickSkipToPreviousMusicButton: () -> Unit,
+    onClickSkipToNextMusicButton: () -> Unit,
+    onClickPlayOrPauseButton: () -> Unit,
+    onTimeChange: (Int) -> Unit,
+    onClickShuffleButton: () -> Unit,
+    onClickRepeatButton: () -> Unit,
+    onUpdateRoomName: (String) -> Unit,
+    onClickExitFromRoom: () -> Unit,
+    onClickOptions: () -> Unit,
+) {
+    Scaffold(topBar = {
+        currentRoomResource.on(success = { room ->
+            TopBar(
+                room = room,
+                onUpdateRoomName = onUpdateRoomName,
+                onClickExitFromRoom = onClickExitFromRoom,
+                onClickOptions = onClickOptions)
+        })
+    }) {
+        currentRoomResource.on(success = { currentRoom ->
+            Column(Modifier
+                .screenPadding(horizontal = false)
+                .navigationBarsPadding()
+                .fillMaxSize()) {
+                currentMusicResource.on(success = { currentMusic ->
+                    currentMusic.album.imageUrl?.let { imageUrl ->
+                        AlbumImage(Modifier.screenPadding(vertical = false), imageUrl)
+                    }
+                    Player(
+                        currentMusic = currentMusic,
+                        player = currentRoom.player,
+                        onTimeChange = onTimeChange,
+                        onClickShuffleButton = onClickShuffleButton,
+                        onClickSkipToPreviousMusicButton = onClickSkipToPreviousMusicButton,
+                        onClickPlayOrPauseButton = onClickPlayOrPauseButton,
+                        onClickSkipToNextMusicButton = onClickSkipToNextMusicButton,
+                        onClickRepeatButton = onClickRepeatButton
+                    )
+                })
             }
         })
     }
-
-    if (showExitFromRoomDialog)
-        ExitFromRoomDialog(onConfirmExitFromRoom = {
-            showExitFromRoomDialog = false
-            showLoadingAction = true
-            onConfirmExitFromRoom()
-        }, onDismissExitRoom = {
-            showExitFromRoomDialog = false
-        })
-
-    if (showLoadingAction)
-        LoadingAction()
 }
 
+@Composable
+private fun Options() {
+    Text(text = "OPtions", style = typography.h1)
+}
 
 @Composable
 private fun LoadingAction() {
@@ -141,63 +211,6 @@ private fun Background(color: Color) {
             end = Offset(x = 0f, y = size.height)
         ), size = size)
     })
-}
-
-@Composable
-private fun RoomDetailsContent(
-    room: Room,
-    currentMusicResource: Resource<Music>,
-    onClickSkipToPreviousMusicButton: () -> Unit,
-    onClickSkipToNextMusicButton: () -> Unit,
-    onClickPlayOrPauseButton: () -> Unit,
-    onTimeChange: (Int) -> Unit,
-    onClickShuffleButton: () -> Unit,
-    onClickRepeatButton: () -> Unit,
-) {
-    Column(modifier = Modifier
-        .screenPadding(horizontal = false)
-        .navigationBarsPadding()
-        .fillMaxSize()) {
-        //TODO demais casos
-        currentMusicResource.on(success = { currentMusic ->
-            currentMusic.album.imageUrl?.let { url ->
-                AlbumImage(modifier = Modifier.screenPadding(vertical = false),
-                    imageUrl = url)
-            }
-            Player(
-                currentMusic = currentMusic,
-                player = room.player,
-                onTimeChange = onTimeChange,
-                onClickShuffleButton = onClickShuffleButton,
-                onClickSkipToPreviousMusicButton = onClickSkipToPreviousMusicButton,
-                onClickPlayOrPauseButton = onClickPlayOrPauseButton,
-                onClickSkipToNextMusicButton = onClickSkipToNextMusicButton,
-                onClickRepeatButton = onClickRepeatButton
-            )
-        })
-    }
-}
-
-@Composable
-private fun RoomDetailsTopBar(
-    roomName: String,
-    onUpdateTitle: (String) -> Unit,
-    onClickExitFromRoom: () -> Unit,
-    onClickOptions: () -> Unit,
-) {
-    var title by remember { mutableStateOf(roomName) }
-    title = roomName
-    AppTopBarWithCentralizedTitle(modifier = Modifier.statusBarsPadding(),
-        iconBack = Icons.Rounded.Close,
-        title = {
-            RoomTitle(title = title, onValueChange = { newTitle ->
-                title = newTitle
-            }, onUpdateTitle = onUpdateTitle)
-        },
-        onBackPressed = onClickExitFromRoom,
-        actions = {
-            OptionsButton(onClickOptions)
-        })
 }
 
 
@@ -253,7 +266,10 @@ private fun ColumnScope.AlbumImage(modifier: Modifier = Modifier, imageUrl: Stri
 }
 
 @Composable
-private fun ExitFromRoomDialog(onConfirmExitFromRoom: () -> Unit, onDismissExitRoom: () -> Unit) {
+private fun ExitFromRoomDialog(
+    onConfirmExitFromRoom: () -> Unit,
+    onDismissExitRoom: () -> Unit,
+) {
     AlertDialog(onDismissRequest = {
         onDismissExitRoom()
     }, dismissButton = {
@@ -282,30 +298,32 @@ private fun DialogButton(
         color = colors.secondary, style = typography.button)
 }
 
-@Composable
-@Preview(showBackground = true)
-private fun RoomDetailsContentPreview() {
-    YouPlayTheme {
-        RoomDetailsContent(
-            room = Room(name = stringResource(id = R.string.defaultRoomName, "Elias"),
-                id = "",
-                player = PlayerData(),
-                currentMusicId = "",
-                ownerId = ""),
-            currentMusicResource = Resource.success(Music(id = "",
-                name = "Sonhei que tava me casando",
-                artists = listOf(Artist("WS", "Wesley Safadão")),
-                album = Album(name = "Album", imageUrl = "", id = ""),
-                durationInSeconds = 300)),
-            onClickSkipToPreviousMusicButton = {},
-            onClickSkipToNextMusicButton = {},
-            onClickPlayOrPauseButton = {},
-            onTimeChange = {},
-            onClickShuffleButton = {},
-            onClickRepeatButton = {}
-        )
-    }
-}
+//todo: lembrar de corrigir
+//@Composable
+//@Preview(showBackground = true)
+//private fun RoomDetailsContentPreview() {
+//    YouPlayTheme {
+//        RoomDetailsContent(
+//            currentRoomResource = Room(name = stringResource(id = R.string.defaultRoomName,
+//                "Elias"),
+//                id = "",
+//                player = PlayerData(),
+//                currentMusicId = "",
+//                ownerId = ""),
+//            currentMusicResource = Resource.success(Music(id = "",
+//                name = "Sonhei que tava me casando",
+//                artists = listOf(Artist("WS", "Wesley Safadão")),
+//                album = Album(name = "Album", imageUrl = "", id = ""),
+//                durationInSeconds = 300)),
+//            onClickSkipToPreviousMusicButton = {},
+//            onClickSkipToNextMusicButton = {},
+//            onClickPlayOrPauseButton = {},
+//            onTimeChange = {},
+//            onClickShuffleButton = {},
+//            onClickRepeatButton = {},
+//        )
+//    }
+//}
 
 @Composable
 @Preview(showBackground = true)

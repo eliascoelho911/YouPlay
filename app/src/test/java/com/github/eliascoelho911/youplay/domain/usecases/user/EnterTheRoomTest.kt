@@ -8,8 +8,8 @@ import com.github.eliascoelho911.youplay.domain.entities.User
 import com.github.eliascoelho911.youplay.domain.entities.copyAddingUsers
 import com.github.eliascoelho911.youplay.domain.exceptions.DomainErrorException
 import com.github.eliascoelho911.youplay.domain.util.room.CheckIfRoomExistsById
-import com.github.eliascoelho911.youplay.global.Messages
-import com.github.eliascoelho911.youplay.global.Resource
+import com.github.eliascoelho911.youplay.util.Messages
+import com.github.eliascoelho911.youplay.util.Resource
 import com.github.eliascoelho911.youplay.roomMock
 import com.github.eliascoelho911.youplay.userMock
 import io.mockk.CapturingSlot
@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import kotlin.math.exp
 
 class EnterTheRoomTest : BaseTest() {
     @MockK

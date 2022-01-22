@@ -1,10 +1,10 @@
 package com.github.eliascoelho911.youplay.infrastructure.data.repositories
 
-import com.github.eliascoelho911.youplay.global.Resource
-import com.github.eliascoelho911.youplay.global.callbackFlowResource
-import com.github.eliascoelho911.youplay.global.catchExceptions
-import com.github.eliascoelho911.youplay.global.flowResource
-import com.github.eliascoelho911.youplay.global.serializeToMap
+import com.github.eliascoelho911.youplay.util.Resource
+import com.github.eliascoelho911.youplay.util.callbackFlowResource
+import com.github.eliascoelho911.youplay.util.catchExceptions
+import com.github.eliascoelho911.youplay.util.flowResource
+import com.github.eliascoelho911.youplay.util.serializeToMap
 import com.github.eliascoelho911.youplay.domain.entities.ID
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.repositories.RoomRepository

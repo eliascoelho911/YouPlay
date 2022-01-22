@@ -1,14 +1,14 @@
 package com.github.eliascoelho911.youplay.domain.usecases.room
 
 import com.github.eliascoelho911.youplay.BaseTest
-import com.github.eliascoelho911.youplay.global.Resource
+import com.github.eliascoelho911.youplay.util.Resource
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.entities.User
 import com.github.eliascoelho911.youplay.domain.exceptions.DomainErrorException
 import com.github.eliascoelho911.youplay.domain.repositories.RoomRepository
 import com.github.eliascoelho911.youplay.domain.usecases.user.GetLoggedUser
 import com.github.eliascoelho911.youplay.domain.util.room.CheckIfRoomExistsById
-import com.github.eliascoelho911.youplay.global.Messages
+import com.github.eliascoelho911.youplay.util.Messages
 import io.mockk.CapturingSlot
 import io.mockk.coEvery
 import io.mockk.coVerify

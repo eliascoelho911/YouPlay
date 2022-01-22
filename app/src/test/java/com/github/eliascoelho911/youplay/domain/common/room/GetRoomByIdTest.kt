@@ -2,8 +2,7 @@ package com.github.eliascoelho911.youplay.domain.common.room
 
 import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.assertIsResourceSuccess
-import com.github.eliascoelho911.youplay.global.Resource
-import com.github.eliascoelho911.youplay.domain.common.room.GetRoomById
+import com.github.eliascoelho911.youplay.util.Resource
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.repositories.RoomRepository
 import io.mockk.every

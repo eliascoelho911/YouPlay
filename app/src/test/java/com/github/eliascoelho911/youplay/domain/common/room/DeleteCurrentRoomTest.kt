@@ -1,7 +1,7 @@
 package com.github.eliascoelho911.youplay.domain.common.room
 
 import com.github.eliascoelho911.youplay.BaseTest
-import com.github.eliascoelho911.youplay.global.Resource
+import com.github.eliascoelho911.youplay.util.Resource
 import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
 import com.github.eliascoelho911.youplay.roomMock
 import io.mockk.coEvery

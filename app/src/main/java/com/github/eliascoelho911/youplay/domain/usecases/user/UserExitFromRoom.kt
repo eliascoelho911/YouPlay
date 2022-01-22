@@ -1,8 +1,8 @@
 package com.github.eliascoelho911.youplay.domain.usecases.user
 
-import com.github.eliascoelho911.youplay.global.Messages
-import com.github.eliascoelho911.youplay.global.assertSuccess
-import com.github.eliascoelho911.youplay.global.lastResult
+import com.github.eliascoelho911.youplay.util.Messages
+import com.github.eliascoelho911.youplay.util.assertSuccess
+import com.github.eliascoelho911.youplay.util.lastResult
 import com.github.eliascoelho911.youplay.domain.util.runChangingExceptionMessage
 import com.github.eliascoelho911.youplay.domain.common.session.PutCurrentRoomId
 import com.github.eliascoelho911.youplay.domain.entities.copyRemovingUsers

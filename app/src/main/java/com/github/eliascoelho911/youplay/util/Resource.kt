@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.global
+package com.github.eliascoelho911.youplay.util
 
 sealed class Resource<T> {
     class Loading<T> : Resource<T>() {

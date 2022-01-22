@@ -3,8 +3,8 @@ package com.github.eliascoelho911.youplay.domain.usecases.room
 import com.github.eliascoelho911.youplay.domain.common.room.ObserveRoomById
 import com.github.eliascoelho911.youplay.domain.common.session.GetCurrentRoomId
 import com.github.eliascoelho911.youplay.domain.entities.Room
-import com.github.eliascoelho911.youplay.global.catchExceptions
-import com.github.eliascoelho911.youplay.global.flowResource
+import com.github.eliascoelho911.youplay.util.catchExceptions
+import com.github.eliascoelho911.youplay.util.flowResource
 import kotlinx.coroutines.flow.emitAll
 
 class ObserveCurrentRoom(

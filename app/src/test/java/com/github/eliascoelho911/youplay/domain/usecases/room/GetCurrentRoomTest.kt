@@ -6,8 +6,8 @@ import com.github.eliascoelho911.youplay.assertIsResourceSuccess
 import com.github.eliascoelho911.youplay.domain.common.room.GetRoomById
 import com.github.eliascoelho911.youplay.domain.common.session.GetCurrentRoomId
 import com.github.eliascoelho911.youplay.domain.entities.Room
-import com.github.eliascoelho911.youplay.global.Resource
-import com.github.eliascoelho911.youplay.global.lastResult
+import com.github.eliascoelho911.youplay.util.Resource
+import com.github.eliascoelho911.youplay.util.lastResult
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs

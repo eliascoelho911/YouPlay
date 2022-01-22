@@ -29,14 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.github.eliascoelho911.youplay.R
-import com.github.eliascoelho911.youplay.presentation.common.AppTopBarWithCentralizedTitle
-import com.github.eliascoelho911.youplay.presentation.common.ButtonWithLoading
-import com.github.eliascoelho911.youplay.presentation.common.CodeTextField
-import com.github.eliascoelho911.youplay.presentation.common.screenPadding
+import com.github.eliascoelho911.youplay.presentation.ui.base.components.AppTopBarWithCentralizedTitle
+import com.github.eliascoelho911.youplay.presentation.ui.base.components.ButtonWithLoading
+import com.github.eliascoelho911.youplay.presentation.ui.base.components.CodeTextField
+import com.github.eliascoelho911.youplay.presentation.ui.base.components.screenPadding
 import com.github.eliascoelho911.youplay.presentation.ui.theme.YouPlayTheme
 import com.github.eliascoelho911.youplay.presentation.util.RoomIDGenerator
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
+
+//todo: refatorar para novo padrão
 
 @Composable
 fun AccessRoomScreen(

@@ -1,8 +1,8 @@
 package com.github.eliascoelho911.youplay.domain.usecases.user
 
-import com.github.eliascoelho911.youplay.global.Messages
-import com.github.eliascoelho911.youplay.global.assertSuccess
-import com.github.eliascoelho911.youplay.global.lastResult
+import com.github.eliascoelho911.youplay.util.Messages
+import com.github.eliascoelho911.youplay.util.assertSuccess
+import com.github.eliascoelho911.youplay.util.lastResult
 import com.github.eliascoelho911.youplay.domain.util.room.CheckIfRoomExistsById
 import com.github.eliascoelho911.youplay.domain.common.room.UpdateCurrentRoom
 import com.github.eliascoelho911.youplay.domain.common.session.PutCurrentRoomId

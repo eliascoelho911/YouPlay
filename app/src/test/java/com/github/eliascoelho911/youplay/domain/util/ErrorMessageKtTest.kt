@@ -3,8 +3,8 @@ package com.github.eliascoelho911.youplay.domain.util
 import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.assertIsResourceFailure
 import com.github.eliascoelho911.youplay.domain.exceptions.DomainErrorException
-import com.github.eliascoelho911.youplay.global.Resource
-import com.github.eliascoelho911.youplay.global.lastResult
+import com.github.eliascoelho911.youplay.util.Resource
+import com.github.eliascoelho911.youplay.util.lastResult
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert.assertThat

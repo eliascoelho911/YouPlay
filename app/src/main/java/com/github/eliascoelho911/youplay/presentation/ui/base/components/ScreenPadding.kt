@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.presentation.common
+package com.github.eliascoelho911.youplay.presentation.ui.base.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier

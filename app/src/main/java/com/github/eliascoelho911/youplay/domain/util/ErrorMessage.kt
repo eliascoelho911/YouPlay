@@ -1,6 +1,6 @@
 package com.github.eliascoelho911.youplay.domain.util
 
-import com.github.eliascoelho911.youplay.global.Resource
+import com.github.eliascoelho911.youplay.util.Resource
 import com.github.eliascoelho911.youplay.domain.exceptions.DomainErrorException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

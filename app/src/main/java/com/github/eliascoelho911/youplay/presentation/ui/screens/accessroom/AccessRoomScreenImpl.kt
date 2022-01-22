@@ -6,7 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.github.eliascoelho911.youplay.presentation.common.AnimationDurations
-import com.github.eliascoelho911.youplay.presentation.common.navigate
+import com.github.eliascoelho911.youplay.presentation.ui.base.components.navigate
 import com.github.eliascoelho911.youplay.presentation.ui.main.MainActivity
 import com.github.eliascoelho911.youplay.presentation.ui.main.slideInHorizontallyTransition
 import com.github.eliascoelho911.youplay.presentation.ui.main.slideOutHorizontallyTransition

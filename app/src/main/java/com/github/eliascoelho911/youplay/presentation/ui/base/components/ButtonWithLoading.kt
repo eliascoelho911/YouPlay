@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.presentation.common
+package com.github.eliascoelho911.youplay.presentation.ui.base.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn

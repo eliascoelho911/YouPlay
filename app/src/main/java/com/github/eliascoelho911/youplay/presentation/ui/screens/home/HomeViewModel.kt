@@ -3,8 +3,8 @@ package com.github.eliascoelho911.youplay.presentation.ui.screens.home
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.github.eliascoelho911.youplay.R
-import com.github.eliascoelho911.youplay.global.assertSuccess
-import com.github.eliascoelho911.youplay.global.lastResult
+import com.github.eliascoelho911.youplay.util.assertSuccess
+import com.github.eliascoelho911.youplay.util.lastResult
 import com.github.eliascoelho911.youplay.domain.entities.ID
 import com.github.eliascoelho911.youplay.domain.usecases.room.CreateNewRoom
 import com.github.eliascoelho911.youplay.domain.usecases.user.EnterTheRoom

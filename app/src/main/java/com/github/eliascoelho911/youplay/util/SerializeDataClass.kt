@@ -1,4 +1,4 @@
-package com.github.eliascoelho911.youplay.global
+package com.github.eliascoelho911.youplay.util
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
