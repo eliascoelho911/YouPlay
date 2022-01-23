@@ -1,14 +1,21 @@
 package com.github.eliascoelho911.youplay.presentation.ui.screens.roomdetails
 
+import androidx.compose.material.BottomSheetValue.Collapsed
+import androidx.compose.material.rememberBottomSheetState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import com.github.eliascoelho911.youplay.presentation.ui.base.components.navigate
 import com.github.eliascoelho911.youplay.presentation.navigation.Destination
-import com.github.eliascoelho911.youplay.presentation.ui.base.screens.RoomDetailsScreen
+import com.github.eliascoelho911.youplay.presentation.ui.base.components.navigate
+import com.github.eliascoelho911.youplay.presentation.ui.base.screens.roomdetails.RoomDetailsScreen
 import com.github.eliascoelho911.youplay.presentation.ui.main.MainActivity
-import com.github.eliascoelho911.youplay.presentation.util.setValueToOpposite
+import com.github.eliascoelho911.youplay.presentation.ui.states.roomdetails.rememberRoomDetailsState
+import com.github.eliascoelho911.youplay.presentation.ui.states.visibility.Visibility.Hide
+import com.github.eliascoelho911.youplay.presentation.ui.states.visibility.rememberVisibilityState
+import com.github.eliascoelho911.youplay.util.Resource
 import com.google.accompanist.navigation.animation.composable
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -19,13 +26,29 @@ fun MainActivity.roomDetailsScreenImpl(
 ) {
     navGraphBuilder.composable(Destination.RoomDetails.baseRoute) {
         val viewModel: RoomDetailsViewModel by viewModel()
+        val coroutineScope = rememberCoroutineScope()
 
-        RoomDetailsScreen(state = viewModel,
-            data = viewModel,
+        val bottomSheetOptionsState = rememberBottomSheetState(initialValue = Collapsed)
+        val exitFromRoomDialogState = rememberVisibilityState(initialValue = Hide)
+        val loadingActionState = rememberVisibilityState(initialValue = Hide)
+        val state = rememberRoomDetailsState(bottomSheetOptionsState,
+            exitFromRoomDialogState,
+            loadingActionState)
+
+        val currentRoomResource by viewModel.currentRoomResource.observeAsState(initial = Resource.loading())
+        val currentMusicResource by viewModel.currentMusicResource.observeAsState(initial = Resource.loading())
+
+        RoomDetailsScreen(state,
+            currentRoomResource = currentRoomResource,
+            currentMusicResource = currentMusicResource,
             backgroundColor = Color.Blue,
-            onClickOptions = { viewModel.optionsIsVisible.setValueToOpposite() },
+            onClickOptions = {
+                coroutineScope.launch {
+                    bottomSheetOptionsState.expand()
+                }
+            },
             onUpdateRoomName = { name ->
-                lifecycleScope.launch {
+                coroutineScope.launch {
                     runCatching {
                         viewModel.updateCurrentRoomName(name)
                     }.onFailure {
@@ -39,11 +62,13 @@ fun MainActivity.roomDetailsScreenImpl(
             onClickShuffleButton = {},
             onClickRepeatButton = {},
             onTimeChange = {},
-            onClickExitFromRoom = { viewModel.exitFromRoomDialogIsVisible.value = true },
+            onClickExitFromRoom = {
+                exitFromRoomDialogState.show()
+            },
             onConfirmExitFromRoom = {
-                viewModel.exitFromRoomDialogIsVisible.value = false
-                viewModel.loadingActionIsVisible.value = true
-                lifecycleScope.launch {
+                exitFromRoomDialogState.hide()
+                loadingActionState.show()
+                coroutineScope.launch {
                     runCatching {
                         viewModel.userExitFromRoom()
                     }.onSuccess {
@@ -55,7 +80,7 @@ fun MainActivity.roomDetailsScreenImpl(
                     }
                 }
             },
-            onDismissExitFromRoom = { viewModel.exitFromRoomDialogIsVisible.value = false }
+            onDismissExitFromRoom = { exitFromRoomDialogState.hide() }
         )
     }
 }
