@@ -1,5 +1,6 @@
 package com.github.eliascoelho911.youplay.domain.usecases.user
 
+import android.content.Context
 import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.domain.common.room.UpdateCurrentRoom
 import com.github.eliascoelho911.youplay.domain.common.session.PutCurrentRoomId
@@ -8,10 +9,9 @@ import com.github.eliascoelho911.youplay.domain.entities.User
 import com.github.eliascoelho911.youplay.domain.entities.copyAddingUsers
 import com.github.eliascoelho911.youplay.domain.exceptions.DomainErrorException
 import com.github.eliascoelho911.youplay.domain.util.room.CheckIfRoomExistsById
-import com.github.eliascoelho911.youplay.util.Messages
-import com.github.eliascoelho911.youplay.util.Resource
 import com.github.eliascoelho911.youplay.roomMock
 import com.github.eliascoelho911.youplay.userMock
+import com.github.eliascoelho911.youplay.util.Resource
 import io.mockk.CapturingSlot
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -38,7 +38,7 @@ class EnterTheRoomTest : BaseTest() {
     private lateinit var checkIfRoomExistsById: CheckIfRoomExistsById
 
     @RelaxedMockK
-    private lateinit var errorMessages: Messages.Error
+    private lateinit var context: Context
 
     @InjectMockKs
     private lateinit var enterTheRoom: EnterTheRoom

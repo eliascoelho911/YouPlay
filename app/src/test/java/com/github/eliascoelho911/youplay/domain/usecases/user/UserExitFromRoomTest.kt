@@ -1,16 +1,16 @@
 package com.github.eliascoelho911.youplay.domain.usecases.user
 
+import android.content.Context
 import com.github.eliascoelho911.youplay.BaseTest
-import com.github.eliascoelho911.youplay.util.Resource
-import com.github.eliascoelho911.youplay.domain.entities.Room
-import com.github.eliascoelho911.youplay.domain.entities.copyRemovingUsers
 import com.github.eliascoelho911.youplay.domain.common.room.DeleteCurrentRoom
-import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
 import com.github.eliascoelho911.youplay.domain.common.room.UpdateCurrentRoom
 import com.github.eliascoelho911.youplay.domain.common.session.PutCurrentRoomId
-import com.github.eliascoelho911.youplay.util.Messages
+import com.github.eliascoelho911.youplay.domain.entities.Room
+import com.github.eliascoelho911.youplay.domain.entities.copyRemovingUsers
+import com.github.eliascoelho911.youplay.domain.usecases.room.GetCurrentRoom
 import com.github.eliascoelho911.youplay.roomMock
 import com.github.eliascoelho911.youplay.userMock
+import com.github.eliascoelho911.youplay.util.Resource
 import io.mockk.CapturingSlot
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -41,7 +41,7 @@ class UserExitFromRoomTest : BaseTest() {
     private lateinit var putCurrentRoomId: PutCurrentRoomId
 
     @RelaxedMockK
-    private lateinit var errorMessages: Messages.Error
+    private lateinit var context: Context
 
     @InjectMockKs
     private lateinit var userExitFromRoom: UserExitFromRoom

@@ -1,5 +1,6 @@
 package com.github.eliascoelho911.youplay.presentation.ui.screens.roomdetails
 
+import android.content.Context
 import com.github.eliascoelho911.youplay.BaseTest
 import com.github.eliascoelho911.youplay.domain.entities.Room
 import com.github.eliascoelho911.youplay.domain.usecases.room.ObserveCurrentMusic
@@ -12,6 +13,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -28,6 +30,9 @@ class RoomDetailsViewModelTest : BaseTest() {
 
     @MockK
     private lateinit var observeCurrentMusic: ObserveCurrentMusic
+
+    @RelaxedMockK
+    private lateinit var context: Context
 
     @InjectMockKs
     private lateinit var viewModel: RoomDetailsViewModel
