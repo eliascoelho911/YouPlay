@@ -5,28 +5,38 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomDrawer
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.MaterialTheme.typography
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,9 +52,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -57,6 +69,7 @@ import com.github.eliascoelho911.youplay.presentation.ui.base.components.AppTopB
 import com.github.eliascoelho911.youplay.presentation.ui.base.components.screenPadding
 import com.github.eliascoelho911.youplay.presentation.ui.screens.roomdetails.Player
 import com.github.eliascoelho911.youplay.presentation.ui.states.roomdetails.RoomDetailsState
+import com.github.eliascoelho911.youplay.presentation.ui.theme.Black0E0E0E
 import com.github.eliascoelho911.youplay.presentation.ui.theme.YouPlayTheme
 import com.github.eliascoelho911.youplay.util.Resource
 import com.github.eliascoelho911.youplay.util.callIf
@@ -69,6 +82,7 @@ fun RoomDetailsScreen(
     state: RoomDetailsState,
     currentRoomResource: Resource<Room>,
     currentMusicResource: Resource<Music>,
+    optionsItems: List<OptionData>,
     backgroundColor: Color,
     onUpdateRoomName: (String) -> Unit,
     onClickOptions: () -> Unit,
@@ -85,6 +99,7 @@ fun RoomDetailsScreen(
     RoomDetailsContent(
         currentRoomResource,
         currentMusicResource,
+        optionsItems,
         state,
         backgroundColor,
         onClickExitFromRoom,
@@ -97,7 +112,7 @@ fun RoomDetailsScreen(
         onClickSkipToPreviousMusicButton,
         onClickPlayOrPauseButton,
         onClickSkipToNextMusicButton,
-        onClickRepeatButton
+        onClickRepeatButton,
     )
 }
 
@@ -128,6 +143,7 @@ private fun TopBar(
 private fun RoomDetailsContent(
     currentRoomResource: Resource<Room>,
     currentMusicResource: Resource<Music>,
+    optionsItems: List<OptionData>,
     state: RoomDetailsState,
     backgroundColor: Color,
     onClickExitFromRoom: () -> Unit,
@@ -145,11 +161,7 @@ private fun RoomDetailsContent(
     Box(Modifier.fillMaxSize()) {
         Background(color = backgroundColor)
 
-        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-            bottomSheetState = state.bottomSheetOptionsState
-        )
-
-        BottomSheetScaffold(topBar = {
+        Scaffold(topBar = {
             currentRoomResource.on(success = { room ->
                 TopBar(
                     room = room,
@@ -157,31 +169,36 @@ private fun RoomDetailsContent(
                     onClickExitFromRoom = onClickExitFromRoom,
                     onClickOptions = onClickOptions)
             })
-        },
-            sheetContent = { Options() },
-            sheetPeekHeight = 0.dp,
-            scaffoldState = bottomSheetScaffoldState
-        ) {
+        }) {
             currentRoomResource.on(success = { currentRoom ->
-                Column(Modifier
-                    .screenPadding(horizontal = false)
-                    .navigationBarsPadding()
-                    .fillMaxSize()) {
-                    currentMusicResource.on(success = { currentMusic ->
-                        currentMusic.album.imageUrl?.let { imageUrl ->
-                            AlbumImage(Modifier.screenPadding(vertical = false), imageUrl)
-                        }
-                        Player(
-                            currentMusic = currentMusic,
-                            player = currentRoom.player,
-                            onTimeChange = onTimeChange,
-                            onClickShuffleButton = onClickShuffleButton,
-                            onClickSkipToPreviousMusicButton = onClickSkipToPreviousMusicButton,
-                            onClickPlayOrPauseButton = onClickPlayOrPauseButton,
-                            onClickSkipToNextMusicButton = onClickSkipToNextMusicButton,
-                            onClickRepeatButton = onClickRepeatButton
-                        )
-                    })
+                BottomDrawer(drawerContent = {
+                    Options(Modifier.padding(vertical = 24.dp), room = currentRoom,
+                        items = optionsItems)
+                },
+                    drawerState = state.bottomDrawerOptionsState,
+                    drawerBackgroundColor = Black0E0E0E.copy(alpha = 0.97f),
+                    drawerShape = MaterialTheme.shapes.large.copy(bottomEnd = CornerSize(0.dp),
+                        bottomStart = CornerSize(0.dp))) {
+                    Column(Modifier
+                        .screenPadding(horizontal = false)
+                        .navigationBarsPadding()
+                        .fillMaxSize()) {
+                        currentMusicResource.on(success = { currentMusic ->
+                            currentMusic.album.imageUrl?.let { imageUrl ->
+                                AlbumImage(Modifier.screenPadding(vertical = false), imageUrl)
+                            }
+                            Player(
+                                currentMusic = currentMusic,
+                                player = currentRoom.player,
+                                onTimeChange = onTimeChange,
+                                onClickShuffleButton = onClickShuffleButton,
+                                onClickSkipToPreviousMusicButton = onClickSkipToPreviousMusicButton,
+                                onClickPlayOrPauseButton = onClickPlayOrPauseButton,
+                                onClickSkipToNextMusicButton = onClickSkipToNextMusicButton,
+                                onClickRepeatButton = onClickRepeatButton
+                            )
+                        })
+                    }
                 }
             })
         }
@@ -196,8 +213,37 @@ private fun RoomDetailsContent(
 }
 
 @Composable
-private fun Options() {
-    Text(text = "Options", style = typography.h1)
+private fun Options(modifier: Modifier = Modifier, room: Room, items: List<OptionData>) {
+    Column(modifier) {
+        Text(modifier = Modifier.fillMaxWidth(),
+            text = room.name,
+            style = typography.h5,
+            textAlign = TextAlign.Center)
+
+        Spacer(Modifier.height(16.dp))
+
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(items) {
+                OptionItem(it)
+            }
+        }
+    }
+}
+
+@Composable
+fun OptionItem(item: OptionData, onClick: () -> Unit = {}) {
+    TextButton(onClick) {
+        Row(Modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+            Icon(imageVector = item.icon,
+                contentDescription = item.text,
+                tint = Color.White.copy(alpha = 0.5f))
+            Text(text = item.text, style = typography.subtitle2)
+        }
+    }
 }
 
 @Composable
@@ -257,10 +303,10 @@ private fun ColumnScope.AlbumImage(modifier: Modifier = Modifier, imageUrl: Stri
         animationSpec = tween(if (targetImageAlpha == 0f) 0 else medium))
     Image(modifier = modifier
         .clip(CircleShape)
-        .size(AlbumImageSize)
+        .size(250.dp)
         .alpha(imageAlpha)
         .align(Alignment.CenterHorizontally)
-        .shadow(AlbumImageElevation, shape = CircleShape),
+        .shadow(16.dp, shape = CircleShape),
         painter = rememberImagePainter(data = imageUrl,
             builder = {
                 listener(onSuccess = { _, _ ->
@@ -300,7 +346,7 @@ private fun DialogButton(
 ) {
     Text(modifier = Modifier
         .clickable(onClick = onClick)
-        .padding(DialogButtonPadding),
+        .padding(8.dp),
         text = text.uppercase(),
         color = colors.secondary, style = typography.button)
 }
@@ -343,6 +389,4 @@ private fun ExitFromRoomDialogPreview() {
     }
 }
 
-private val DialogButtonPadding = 8.dp
-private val AlbumImageSize = 250.dp
-private val AlbumImageElevation = 16.dp
+data class OptionData(val icon: ImageVector, val text: String, val onClick: () -> Unit = {})

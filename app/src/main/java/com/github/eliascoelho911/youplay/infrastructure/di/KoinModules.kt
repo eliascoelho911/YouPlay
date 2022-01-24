@@ -41,7 +41,6 @@ import com.github.eliascoelho911.youplay.presentation.ui.main.MainViewModel
 import com.github.eliascoelho911.youplay.presentation.ui.screens.accessroom.AccessRoomViewModel
 import com.github.eliascoelho911.youplay.presentation.ui.screens.home.HomeViewModel
 import com.github.eliascoelho911.youplay.presentation.ui.screens.roomdetails.RoomDetailsViewModel
-import com.github.eliascoelho911.youplay.util.Messages
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -148,7 +147,7 @@ object PresentationModules {
             HomeViewModel(get(), get(), context = WeakReference(get()), get())
         }
         viewModel {
-            RoomDetailsViewModel(get(), get(), get(), get())
+            RoomDetailsViewModel(get(), get(), get(), get(), get())
         }
         viewModel {
             MainViewModel(get(), get(), get(), get())
@@ -156,11 +155,5 @@ object PresentationModules {
         viewModel {
             AccessRoomViewModel(get())
         }
-    }
-}
-
-object UtilModules {
-    val module = module {
-        single { Messages.Error(get()) }
     }
 }

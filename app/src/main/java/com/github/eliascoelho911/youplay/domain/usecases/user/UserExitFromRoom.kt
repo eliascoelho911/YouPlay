@@ -1,6 +1,7 @@
 package com.github.eliascoelho911.youplay.domain.usecases.user
 
-import com.github.eliascoelho911.youplay.util.Messages
+import android.content.Context
+import com.github.eliascoelho911.youplay.R
 import com.github.eliascoelho911.youplay.util.assertSuccess
 import com.github.eliascoelho911.youplay.util.lastResult
 import com.github.eliascoelho911.youplay.domain.util.runChangingExceptionMessage
@@ -16,9 +17,9 @@ class UserExitFromRoom(
     private val getCurrentRoom: GetCurrentRoom,
     private val deleteCurrentRoom: DeleteCurrentRoom,
     private val updateCurrentRoom: UpdateCurrentRoom,
-    private val errorMessages: Messages.Error,
+    private val context: Context
 ) {
-    suspend fun exit() = runChangingExceptionMessage(errorMessages.userExitFromRoom) {
+    suspend fun exit() = runChangingExceptionMessage(context.getString(R.string.error_userExitFromRoom)) {
         getCurrentRoom.get().lastResult().assertSuccess { currentRoom ->
             getLoggedUser.get().lastResult().assertSuccess { loggedUser ->
                 if (currentRoom.ownerId == loggedUser.id) {

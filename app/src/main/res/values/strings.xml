@@ -82,4 +82,8 @@
     <string name="roomDetails_errorOnLeaveTheRoom">Erro ao sair da sala</string>
     <string name="roomDetails_repeatButtonDescription">Repetir</string>
     <string name="scanner_prompt">Escaneie o QRCode de seu amigo</string>
+    <string name="option_share">Compartilhar sala</string>
+    <string name="option_addMusic">Adicionar música na fila</string>
+    <string name="option_editRoomName">Editar nome da sala</string>
+    <string name="option_seeUsersInRoom">Ver amigos na sala</string>
 </resources>

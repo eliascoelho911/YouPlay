@@ -4,7 +4,6 @@ import android.app.Application
 import com.github.eliascoelho911.youplay.infrastructure.di.DomainModules
 import com.github.eliascoelho911.youplay.infrastructure.di.InfrastructureModules
 import com.github.eliascoelho911.youplay.infrastructure.di.PresentationModules
-import com.github.eliascoelho911.youplay.infrastructure.di.UtilModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -22,8 +21,7 @@ class MainApplication : Application() {
                 InfrastructureModules.cachesModule,
                 InfrastructureModules.retrofitModule,
                 InfrastructureModules.interceptorsModule,
-                InfrastructureModules.servicesModule,
-                UtilModules.module)
+                InfrastructureModules.servicesModule)
             androidContext(this@MainApplication)
         }
     }
